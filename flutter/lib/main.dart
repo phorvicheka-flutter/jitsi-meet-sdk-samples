@@ -63,6 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
         debugPrint("readyToClose");
       },
     );
+
+    var isAudioOnly = false;
+    // var isAudioOnly = true;
     var options = JitsiMeetConferenceOptions(
       // serverURL: "http://localhost:8000",
       // serverURL: "https://localhost:8443",
@@ -72,8 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
       // serverURL: "https://meet.jit.si",
       room: "room01",
       configOverrides: {
-        "startWithAudioMuted": false,
-        "startWithVideoMuted": false,
+        // "startWithAudioMuted": true,
+        // if audio only,
+        "startAudioOnly": isAudioOnly,
+        "startWithVideoMuted": isAudioOnly,
+        //
         "hideConferenceSubject": true,
         // "subject": "JitsiwithFlutter",
         // "localSubject": "localJitsiwithFlutter",
@@ -118,7 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
         FeatureFlags.serverUrlChangeEnabled: false,
         FeatureFlags.settingsEnabled: false,
         FeatureFlags.tileViewEnabled: false,
-        // FeatureFlags.videoMuteEnabled: false,
+        // if audio only, videoMuteEnabled: false
+        FeatureFlags.videoMuteEnabled: !isAudioOnly,
+        //
         FeatureFlags.videoShareEnabled: false,
         // FeatureFlags.toolboxEnabled: false, // all buttons and conferenceTimerEnabled
         FeatureFlags.toolboxAlwaysVisible: true,
