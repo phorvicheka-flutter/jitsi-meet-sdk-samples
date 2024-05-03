@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "930888783605",
+    "project_id": "h-project-2b3c9",
+    "storage_bucket": "h-project-2b3c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930888783605:android:b3d2720e659e8e112217bc",
+        "android_client_info": {
+          "package_name": "com.example.jitsi_meet_sdk_sample_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930888783605-rt9au9e6qo93i52ltlbkert96cbu5c2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMuCG5rdRpdRTa-pJQaibijsuJF7apTuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930888783605-rt9au9e6qo93i52ltlbkert96cbu5c2q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "930888783605-e8gvl6l39n15u0t35n0ql73q96gvom5d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.co.connectedin.h1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930888783605:android:561ae18aeeebd96b2217bc",
+        "android_client_info": {
+          "package_name": "kr.co.connectedin.h1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930888783605-65dd129fdlcp100r5f1i5aa5q8nmslis.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.co.connectedin.h1",
+            "certificate_hash": "6ec3fc111fe1e8470b68cc5696df9bb3890366d2"
+          }
+        },
+        {
+          "client_id": "930888783605-rt9au9e6qo93i52ltlbkert96cbu5c2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMuCG5rdRpdRTa-pJQaibijsuJF7apTuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930888783605-rt9au9e6qo93i52ltlbkert96cbu5c2q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "930888783605-e8gvl6l39n15u0t35n0ql73q96gvom5d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.co.connectedin.h1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
