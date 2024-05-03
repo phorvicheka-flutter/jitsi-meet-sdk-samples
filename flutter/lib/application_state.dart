@@ -24,6 +24,7 @@ class ApplicationState extends ChangeNotifier {
     );
 
     firebaseMessaging = FirebaseMessaging.instance;
+    requestMessagingPermission();
 
     firebaseMessaging.onTokenRefresh.listen((token) {
       _fcmToken = token;

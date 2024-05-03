@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
 import 'package:sample_app/application_state.dart';
 
@@ -22,13 +21,13 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  runApp(MyApp(state: ApplicationState()));
+  runApp(MyApp(appState: ApplicationState()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.state});
+  const MyApp({super.key, required this.appState});
 
-  final ApplicationState state;
+  final ApplicationState appState;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +37,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Jitsi Meet Flutter SDK Sample', state: state),
+      home: MyHomePage(
+          title: 'Jitsi Meet Flutter SDK Sample', appState: appState),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title, required this.state});
+  const MyHomePage({super.key, required this.title, required this.appState});
   final String title;
-  final ApplicationState state;
+  final ApplicationState appState;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -56,17 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final meetingRoomNameController = TextEditingController(text: "Room01");
   final meetingUserNameController = TextEditingController(text: "UserName01");
   final jitsiMeet = JitsiMeet();
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero, () {
-      if (!widget.state.messagingAllowed) {
-        widget.state.requestMessagingPermission();
-      }
-    });
-  }
 
   void join() {
     var listener = JitsiMeetEventListener(
@@ -187,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Function to copy FCM token to clipboard
   void _copyTokenToClipboard() {
-    Clipboard.setData(ClipboardData(text: widget.state.fcmToken));
+    Clipboard.setData(ClipboardData(text: widget.appState.fcmToken));
     // Show a snackbar indicating token has been copied
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('FCM Token copied to clipboard')),
@@ -207,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: SingleChildScrollView(
           child: ListenableBuilder(
-              listenable: widget.state,
+              listenable: widget.appState,
               builder: (context, child) {
                 return Column(
                   children: [
@@ -266,14 +255,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     Column(
                       children: [
                         Visibility(
-                          visible: widget.state.messagingAllowed,
+                          visible: widget.appState.messagingAllowed,
                           child: Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
-                                    Text('FCM Token: ${widget.state.fcmToken}'),
+                                    Text(
+                                        'FCM Token: ${widget.appState.fcmToken}'),
                                     IconButton(
                                       icon: const Icon(Icons
                                           .content_copy), // Icon for copying
@@ -292,14 +282,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               ElevatedButton(
                                 onPressed: () =>
-                                    widget.state.subscribeToTopic('weather'),
+                                    widget.appState.subscribeToTopic('weather'),
                                 child: const Text('Subscribe To Weather'),
                               ),
                             ],
                           ),
                         ),
                         Visibility(
-                          visible: !widget.state.messagingAllowed,
+                          visible: !widget.appState.messagingAllowed,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -311,8 +301,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               ElevatedButton(
-                                onPressed: () =>
-                                    widget.state.requestMessagingPermission(),
+                                onPressed: () => widget.appState
+                                    .requestMessagingPermission(),
                                 child: const Text(
                                     'Request Notification Permission'),
                               ),
