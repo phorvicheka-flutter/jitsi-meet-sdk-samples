@@ -7,7 +7,9 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 import '../../change_notifiers/auth_change_notifier.dart';
+import '../../change_notifiers/fcm_token_change_notifier.dart';
 import '../../constants/dimens.dart';
+import '../../main.dart';
 import '../../routes/routes.dart';
 
 class LoginPage extends HookWidget {
@@ -22,6 +24,10 @@ class LoginPage extends HookWidget {
     var t = AppLocalizations.of(context);
     final AuthChangeNotifier authChangeNotifier =
         context.watch<AuthChangeNotifier>();
+    String? fcmToken = context.select(
+      (FcmTokenChangeNotifier fcmTokenChangeNotifier) =>
+          fcmTokenChangeNotifier.fcmToken,
+    );
 
     final FocusNode passwordFocusNode = useFocusNode();
 
@@ -29,10 +35,15 @@ class LoginPage extends HookWidget {
       String userId,
       String password,
     ) async {
+      if (fcmToken == null) {
+        logger.e('Error: no fcmToken');
+        return;
+      }
       // log a user in, letting all the listeners know
       await context.read<AuthChangeNotifier>().login(
             userId,
             password,
+            fcmToken,
           );
 
       // We don't need this code to navigate user when login success

@@ -21,8 +21,11 @@ UserLoginResponseData _$UserLoginResponseDataFromJson(
 
 /// @nodoc
 mixin _$UserLoginResponseData {
-  UserLoginResponseUser get user => throw _privateConstructorUsedError;
+// required UserLoginResponseUser user,
   String get token => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  String get loginId => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,9 +39,7 @@ abstract class $UserLoginResponseDataCopyWith<$Res> {
           $Res Function(UserLoginResponseData) then) =
       _$UserLoginResponseDataCopyWithImpl<$Res, UserLoginResponseData>;
   @useResult
-  $Res call({UserLoginResponseUser user, String token});
-
-  $UserLoginResponseUserCopyWith<$Res> get user;
+  $Res call({String token, String id, String loginId, String name});
 }
 
 /// @nodoc
@@ -55,27 +56,29 @@ class _$UserLoginResponseDataCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? user = null,
     Object? token = null,
+    Object? id = null,
+    Object? loginId = null,
+    Object? name = null,
   }) {
     return _then(_value.copyWith(
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as UserLoginResponseUser,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      loginId: null == loginId
+          ? _value.loginId
+          : loginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserLoginResponseUserCopyWith<$Res> get user {
-    return $UserLoginResponseUserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value) as $Val);
-    });
   }
 }
 
@@ -88,10 +91,7 @@ abstract class _$$UserLoginResponseDataImplCopyWith<$Res>
       __$$UserLoginResponseDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserLoginResponseUser user, String token});
-
-  @override
-  $UserLoginResponseUserCopyWith<$Res> get user;
+  $Res call({String token, String id, String loginId, String name});
 }
 
 /// @nodoc
@@ -106,17 +106,27 @@ class __$$UserLoginResponseDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? user = null,
     Object? token = null,
+    Object? id = null,
+    Object? loginId = null,
+    Object? name = null,
   }) {
     return _then(_$UserLoginResponseDataImpl(
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as UserLoginResponseUser,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      loginId: null == loginId
+          ? _value.loginId
+          : loginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -125,19 +135,28 @@ class __$$UserLoginResponseDataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserLoginResponseDataImpl implements _UserLoginResponseData {
-  _$UserLoginResponseDataImpl({required this.user, required this.token});
+  _$UserLoginResponseDataImpl(
+      {required this.token,
+      required this.id,
+      required this.loginId,
+      required this.name});
 
   factory _$UserLoginResponseDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserLoginResponseDataImplFromJson(json);
 
-  @override
-  final UserLoginResponseUser user;
+// required UserLoginResponseUser user,
   @override
   final String token;
+  @override
+  final String id;
+  @override
+  final String loginId;
+  @override
+  final String name;
 
   @override
   String toString() {
-    return 'UserLoginResponseData(user: $user, token: $token)';
+    return 'UserLoginResponseData(token: $token, id: $id, loginId: $loginId, name: $name)';
   }
 
   @override
@@ -145,13 +164,15 @@ class _$UserLoginResponseDataImpl implements _UserLoginResponseData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserLoginResponseDataImpl &&
-            (identical(other.user, user) || other.user == user) &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.loginId, loginId) || other.loginId == loginId) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user, token);
+  int get hashCode => Object.hash(runtimeType, token, id, loginId, name);
 
   @JsonKey(ignore: true)
   @override
@@ -170,16 +191,22 @@ class _$UserLoginResponseDataImpl implements _UserLoginResponseData {
 
 abstract class _UserLoginResponseData implements UserLoginResponseData {
   factory _UserLoginResponseData(
-      {required final UserLoginResponseUser user,
-      required final String token}) = _$UserLoginResponseDataImpl;
+      {required final String token,
+      required final String id,
+      required final String loginId,
+      required final String name}) = _$UserLoginResponseDataImpl;
 
   factory _UserLoginResponseData.fromJson(Map<String, dynamic> json) =
       _$UserLoginResponseDataImpl.fromJson;
 
-  @override
-  UserLoginResponseUser get user;
-  @override
+  @override // required UserLoginResponseUser user,
   String get token;
+  @override
+  String get id;
+  @override
+  String get loginId;
+  @override
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$$UserLoginResponseDataImplCopyWith<_$UserLoginResponseDataImpl>

@@ -20,8 +20,12 @@ UserLoginRequest _$UserLoginRequestFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserLoginRequest {
+  @JsonKey(name: 'loginId')
   String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'password')
   String get password => throw _privateConstructorUsedError;
+  @JsonKey(name: 'registrationId')
+  String get fcmToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +39,10 @@ abstract class $UserLoginRequestCopyWith<$Res> {
           UserLoginRequest value, $Res Function(UserLoginRequest) then) =
       _$UserLoginRequestCopyWithImpl<$Res, UserLoginRequest>;
   @useResult
-  $Res call({String userId, String password});
+  $Res call(
+      {@JsonKey(name: 'loginId') String userId,
+      @JsonKey(name: 'password') String password,
+      @JsonKey(name: 'registrationId') String fcmToken});
 }
 
 /// @nodoc
@@ -53,6 +60,7 @@ class _$UserLoginRequestCopyWithImpl<$Res, $Val extends UserLoginRequest>
   $Res call({
     Object? userId = null,
     Object? password = null,
+    Object? fcmToken = null,
   }) {
     return _then(_value.copyWith(
       userId: null == userId
@@ -62,6 +70,10 @@ class _$UserLoginRequestCopyWithImpl<$Res, $Val extends UserLoginRequest>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      fcmToken: null == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -75,7 +87,10 @@ abstract class _$$UserLoginRequestImplCopyWith<$Res>
       __$$UserLoginRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String userId, String password});
+  $Res call(
+      {@JsonKey(name: 'loginId') String userId,
+      @JsonKey(name: 'password') String password,
+      @JsonKey(name: 'registrationId') String fcmToken});
 }
 
 /// @nodoc
@@ -91,6 +106,7 @@ class __$$UserLoginRequestImplCopyWithImpl<$Res>
   $Res call({
     Object? userId = null,
     Object? password = null,
+    Object? fcmToken = null,
   }) {
     return _then(_$UserLoginRequestImpl(
       userId: null == userId
@@ -101,6 +117,10 @@ class __$$UserLoginRequestImplCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      fcmToken: null == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -108,19 +128,27 @@ class __$$UserLoginRequestImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserLoginRequestImpl implements _UserLoginRequest {
-  _$UserLoginRequestImpl({required this.userId, required this.password});
+  _$UserLoginRequestImpl(
+      {@JsonKey(name: 'loginId') required this.userId,
+      @JsonKey(name: 'password') required this.password,
+      @JsonKey(name: 'registrationId') required this.fcmToken});
 
   factory _$UserLoginRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserLoginRequestImplFromJson(json);
 
   @override
+  @JsonKey(name: 'loginId')
   final String userId;
   @override
+  @JsonKey(name: 'password')
   final String password;
+  @override
+  @JsonKey(name: 'registrationId')
+  final String fcmToken;
 
   @override
   String toString() {
-    return 'UserLoginRequest(userId: $userId, password: $password)';
+    return 'UserLoginRequest(userId: $userId, password: $password, fcmToken: $fcmToken)';
   }
 
   @override
@@ -130,12 +158,14 @@ class _$UserLoginRequestImpl implements _UserLoginRequest {
             other is _$UserLoginRequestImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.password, password) ||
-                other.password == password));
+                other.password == password) &&
+            (identical(other.fcmToken, fcmToken) ||
+                other.fcmToken == fcmToken));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, userId, password);
+  int get hashCode => Object.hash(runtimeType, userId, password, fcmToken);
 
   @JsonKey(ignore: true)
   @override
@@ -154,16 +184,23 @@ class _$UserLoginRequestImpl implements _UserLoginRequest {
 
 abstract class _UserLoginRequest implements UserLoginRequest {
   factory _UserLoginRequest(
-      {required final String userId,
-      required final String password}) = _$UserLoginRequestImpl;
+          {@JsonKey(name: 'loginId') required final String userId,
+          @JsonKey(name: 'password') required final String password,
+          @JsonKey(name: 'registrationId') required final String fcmToken}) =
+      _$UserLoginRequestImpl;
 
   factory _UserLoginRequest.fromJson(Map<String, dynamic> json) =
       _$UserLoginRequestImpl.fromJson;
 
   @override
+  @JsonKey(name: 'loginId')
   String get userId;
   @override
+  @JsonKey(name: 'password')
   String get password;
+  @override
+  @JsonKey(name: 'registrationId')
+  String get fcmToken;
   @override
   @JsonKey(ignore: true)
   _$$UserLoginRequestImplCopyWith<_$UserLoginRequestImpl> get copyWith =>
