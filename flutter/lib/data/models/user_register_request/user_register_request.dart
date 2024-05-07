@@ -6,10 +6,10 @@ part 'user_register_request.g.dart';
 @freezed
 class UserRegisterRequest with _$UserRegisterRequest {
   factory UserRegisterRequest({
-    required String userId,
-    required String userName,
-    required String email,
-    required String password,
+    @JsonKey(name: 'loginId') required String userId,
+    @JsonKey(name: 'name') required String userName,
+    // required String email,
+    @JsonKey(name: 'password') required String password,
   }) = _UserRegisterRequest;
 
   factory UserRegisterRequest.fromJson(Map<String, dynamic> json) =>

@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import '../models/success_response/success_response.dart';
 import '../models/user_register_request/user_register_request.dart';
 
 import '../models/user/user.dart';
 import '../models/user_login_request/user_login_request.dart';
 import '../models/user_login_response/user_login_response.dart';
+import '../models/user_register_response/user_register_response.dart';
 import '../network/apis/auth_api.dart';
 import '../shared_preferences/shared_preferences_helper.dart';
 
@@ -40,7 +40,7 @@ class AuthRepository {
 
   User? get user => sharedPreferencesHelper.user;
 
-  Future<SuccessResponse> register(
+  Future<UserRegisterResponse> register(
     UserRegisterRequest userRegisterRequest,
   ) async {
     try {

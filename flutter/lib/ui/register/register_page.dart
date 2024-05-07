@@ -57,13 +57,13 @@ class RegisterPage extends HookWidget {
       if (formKey.currentState!.saveAndValidate()) {
         final userId = formKey.currentState!.value['userId'];
         final userName = formKey.currentState!.value['userName'];
-        final email = formKey.currentState!.value['email'];
+        // final email = formKey.currentState!.value['email'];
         final password = formKey.currentState!.value['password'];
         sumbitForm(
           UserRegisterRequest(
             userId: userId,
             userName: userName,
-            email: email,
+            // email: email,
             password: password,
           ),
         );
@@ -116,7 +116,7 @@ class RegisterPage extends HookWidget {
                           FocusScope.of(context).requestFocus(emailFocusNode);
                         },
                       ),
-                      FormBuilderTextField(
+                      /* FormBuilderTextField(
                         key: const Key('txt_email'),
                         name: 'email',
                         autofillHints: const [AutofillHints.email],
@@ -133,7 +133,7 @@ class RegisterPage extends HookWidget {
                           FocusScope.of(context)
                               .requestFocus(passwordFocusNode);
                         },
-                      ),
+                      ), */
                       FormBuilderTextField(
                         key: const Key('txt_password'),
                         name: 'password',

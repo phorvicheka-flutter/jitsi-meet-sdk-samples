@@ -1,8 +1,8 @@
 import '../../../constants/endpoints.dart';
-import '../../models/success_response/success_response.dart';
 import '../../models/user_login_request/user_login_request.dart';
 import '../../models/user_login_response/user_login_response.dart';
 import '../../models/user_register_request/user_register_request.dart';
+import '../../models/user_register_response/user_register_response.dart';
 import '../dio_client.dart';
 
 class AuthApi {
@@ -25,7 +25,7 @@ class AuthApi {
     }
   }
 
-  Future<SuccessResponse> register(
+  Future<UserRegisterResponse> register(
     UserRegisterRequest userRegisterRequest,
   ) async {
     try {
@@ -33,7 +33,7 @@ class AuthApi {
         Endpoints.register,
         data: userRegisterRequest.toJson(),
       );
-      return SuccessResponse.fromJson(responseData);
+      return UserRegisterResponse.fromJson(responseData);
     } catch (e) {
       rethrow;
     }
