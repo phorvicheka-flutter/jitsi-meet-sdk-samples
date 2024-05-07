@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../data/network/apis/fcm_call_api.dart';
 import '../../data/network/apis/fcm_token_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +11,7 @@ import '../../data/network/apis/users_api.dart';
 import '../../data/network/dio_client.dart';
 import '../../data/repositories/app_settings_repository.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/fcm_call_repository.dart';
 import '../../data/repositories/fcm_token_repository.dart';
 import '../../data/repositories/users_repository.dart';
 import '../../data/shared_preferences/shared_preferences_helper.dart';
@@ -54,6 +56,9 @@ Future<void> setupServiceLocator({bool isTesting = false}) async {
   getIt.registerSingleton<FcmTokenApi>(
     FcmTokenApi(dioClient: getIt<DioClient>()),
   );
+  getIt.registerSingleton<FcmCallApi>(
+    FcmCallApi(dioClient: getIt<DioClient>()),
+  );
 
   /* ------------------------------ Repositories ------------------------------ */
   getIt.registerSingleton<AuthRepository>(
@@ -70,6 +75,9 @@ Future<void> setupServiceLocator({bool isTesting = false}) async {
   );
   getIt.registerSingleton<FcmTokenRepository>(
     FcmTokenRepository(fcmTokenApi: getIt<FcmTokenApi>()),
+  );
+  getIt.registerSingleton<FcmCallRepository>(
+    FcmCallRepository(fcmCallApi: getIt<FcmCallApi>()),
   );
 
   /* ----------------------------- ChangeNotifiers ---------------------------- */

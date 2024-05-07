@@ -14,7 +14,7 @@ class AppRouter {
   late final GoRouter _goRouter = GoRouter(
     debugLogDiagnostics: kDebugMode,
     routes: $appRoutes,
-    // initialLocation: const LoginRoute().location,
+    initialLocation: const LoginRoute().location,
     // redirect to the login page if the user is not logged in
     redirect: (BuildContext context, GoRouterState state) {
       final String location = state.matchedLocation;

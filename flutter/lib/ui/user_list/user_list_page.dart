@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import '../../change_notifiers/fcm_call_change_notifier.dart';
 import '../../data/models/get_users_response/get_users_response_data_user.dart';
 import 'package:provider/provider.dart';
 
 import '../../change_notifiers/auth_change_notifier.dart';
-import '../../change_notifiers/fcm_token_change_notifier.dart';
+// import '../../change_notifiers/fcm_token_change_notifier.dart';
 import '../../change_notifiers/users_change_notifier.dart';
 import '../../data/models/user/user.dart';
 import '../../main.dart';
@@ -19,10 +20,10 @@ class UserListPage extends HookWidget {
     User? user = context.select(
       (AuthChangeNotifier authChangeNotifier) => authChangeNotifier.user,
     );
-    String? fcmToken = context.select(
+    /* String? fcmToken = context.select(
       (FcmTokenChangeNotifier fcmTokenChangeNotifier) =>
           fcmTokenChangeNotifier.fcmToken,
-    );
+    ); */
     List<GetUsersResponseDataUser> userList =
         context.watch<UsersChangeNotifier>().userList;
 
@@ -38,14 +39,20 @@ class UserListPage extends HookWidget {
       const [],
     );
 
-    void handleAudioCall(BuildContext context, GetUsersResponseDataUser user) {
+    /* void handleAudioCall(BuildContext context, GetUsersResponseDataUser user) {
       // Implement audio call functionality
       logger.d('Initiate audio call to loginId: ${user.userId}');
-    }
+    } */
 
-    void handleVideoCall(BuildContext context, GetUsersResponseDataUser user) {
+    Future<void> handleVideoCall(
+      BuildContext context,
+      GetUsersResponseDataUser user,
+    ) async {
       // Implement video call functionality
       logger.d('Initiate video call to loginId: ${user.userId}');
+      await context
+          .read<FcmCallChangeNotifier>()
+          .createFcmVideoCall(user.userId);
     }
 
     return Scaffold(
@@ -71,13 +78,13 @@ class UserListPage extends HookWidget {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
+                  /* IconButton(
                     icon: const Icon(Icons.call),
                     onPressed: () {
                       // Implement audio call functionality
                       handleAudioCall(context, user);
                     },
-                  ),
+                  ), */
                   IconButton(
                     icon: const Icon(Icons.videocam),
                     onPressed: () {

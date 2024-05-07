@@ -9,10 +9,12 @@ import 'package:provider/provider.dart';
 
 import '../change_notifiers/app_settings_change_notifier.dart';
 import '../change_notifiers/auth_change_notifier.dart';
+import '../change_notifiers/fcm_call_change_notifier.dart';
 import '../change_notifiers/fcm_token_change_notifier.dart';
 import '../change_notifiers/users_change_notifier.dart';
 import '../constants/app_theme.dart';
 import '../data/repositories/app_settings_repository.dart';
+import '../data/repositories/fcm_call_repository.dart';
 import '../data/repositories/fcm_token_repository.dart';
 import '../data/repositories/users_repository.dart';
 import '../di/components/service_locator.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
       AppSettingsChangeNotifier(getIt<AppSettingsRepository>());
   static final FcmTokenChangeNotifier fcmTokenChangeNotifier =
       FcmTokenChangeNotifier(getIt<FcmTokenRepository>());
+  static final FcmCallChangeNotifier fcmCallChangeNotifier =
+      FcmCallChangeNotifier(getIt<FcmCallRepository>());
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +60,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<FcmTokenChangeNotifier>(
           create: (_) => fcmTokenChangeNotifier,
+        ),
+        ChangeNotifierProvider<FcmCallChangeNotifier>(
+          create: (_) => fcmCallChangeNotifier,
         ),
       ],
       child: Builder(

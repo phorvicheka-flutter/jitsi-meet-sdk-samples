@@ -8,6 +8,7 @@ abstract class Endpoints {
   static const String register = '/account/join';
   static const String users = '/user';
   static const String fcmToken = '/fcmTokens';
+  static const String fcmCall = '/video';
 
   // JWT Token
   static const jwtHeaderAuthorization = 'token';
