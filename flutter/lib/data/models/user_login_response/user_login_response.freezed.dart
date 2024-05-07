@@ -20,7 +20,6 @@ UserLoginResponse _$UserLoginResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserLoginResponse {
-  String get result => throw _privateConstructorUsedError;
   UserLoginResponseData get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +34,7 @@ abstract class $UserLoginResponseCopyWith<$Res> {
           UserLoginResponse value, $Res Function(UserLoginResponse) then) =
       _$UserLoginResponseCopyWithImpl<$Res, UserLoginResponse>;
   @useResult
-  $Res call({String result, UserLoginResponseData data});
+  $Res call({UserLoginResponseData data});
 
   $UserLoginResponseDataCopyWith<$Res> get data;
 }
@@ -53,14 +52,9 @@ class _$UserLoginResponseCopyWithImpl<$Res, $Val extends UserLoginResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? result = null,
     Object? data = null,
   }) {
     return _then(_value.copyWith(
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as String,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -85,7 +79,7 @@ abstract class _$$UserLoginResponseImplCopyWith<$Res>
       __$$UserLoginResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String result, UserLoginResponseData data});
+  $Res call({UserLoginResponseData data});
 
   @override
   $UserLoginResponseDataCopyWith<$Res> get data;
@@ -102,14 +96,9 @@ class __$$UserLoginResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? result = null,
     Object? data = null,
   }) {
     return _then(_$UserLoginResponseImpl(
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as String,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -121,19 +110,17 @@ class __$$UserLoginResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserLoginResponseImpl implements _UserLoginResponse {
-  _$UserLoginResponseImpl({required this.result, required this.data});
+  _$UserLoginResponseImpl({required this.data});
 
   factory _$UserLoginResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserLoginResponseImplFromJson(json);
 
   @override
-  final String result;
-  @override
   final UserLoginResponseData data;
 
   @override
   String toString() {
-    return 'UserLoginResponse(result: $result, data: $data)';
+    return 'UserLoginResponse(data: $data)';
   }
 
   @override
@@ -141,13 +128,12 @@ class _$UserLoginResponseImpl implements _UserLoginResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserLoginResponseImpl &&
-            (identical(other.result, result) || other.result == result) &&
             (identical(other.data, data) || other.data == data));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, result, data);
+  int get hashCode => Object.hash(runtimeType, data);
 
   @JsonKey(ignore: true)
   @override
@@ -165,15 +151,12 @@ class _$UserLoginResponseImpl implements _UserLoginResponse {
 }
 
 abstract class _UserLoginResponse implements UserLoginResponse {
-  factory _UserLoginResponse(
-      {required final String result,
-      required final UserLoginResponseData data}) = _$UserLoginResponseImpl;
+  factory _UserLoginResponse({required final UserLoginResponseData data}) =
+      _$UserLoginResponseImpl;
 
   factory _UserLoginResponse.fromJson(Map<String, dynamic> json) =
       _$UserLoginResponseImpl.fromJson;
 
-  @override
-  String get result;
   @override
   UserLoginResponseData get data;
   @override

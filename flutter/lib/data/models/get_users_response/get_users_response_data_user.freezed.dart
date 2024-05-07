@@ -21,10 +21,11 @@ GetUsersResponseDataUser _$GetUsersResponseDataUserFromJson(
 
 /// @nodoc
 mixin _$GetUsersResponseDataUser {
-  int get id => throw _privateConstructorUsedError;
+// required int id,
+  @JsonKey(name: 'loginId')
   String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
   String get userName => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +39,9 @@ abstract class $GetUsersResponseDataUserCopyWith<$Res> {
           $Res Function(GetUsersResponseDataUser) then) =
       _$GetUsersResponseDataUserCopyWithImpl<$Res, GetUsersResponseDataUser>;
   @useResult
-  $Res call({int id, String userId, String userName, String email});
+  $Res call(
+      {@JsonKey(name: 'loginId') String userId,
+      @JsonKey(name: 'name') String userName});
 }
 
 /// @nodoc
@@ -55,16 +58,10 @@ class _$GetUsersResponseDataUserCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? userId = null,
     Object? userName = null,
-    Object? email = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -72,10 +69,6 @@ class _$GetUsersResponseDataUserCopyWithImpl<$Res,
       userName: null == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -90,7 +83,9 @@ abstract class _$$GetUsersResponseDataUserImplCopyWith<$Res>
       __$$GetUsersResponseDataUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String userId, String userName, String email});
+  $Res call(
+      {@JsonKey(name: 'loginId') String userId,
+      @JsonKey(name: 'name') String userName});
 }
 
 /// @nodoc
@@ -106,16 +101,10 @@ class __$$GetUsersResponseDataUserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? userId = null,
     Object? userName = null,
-    Object? email = null,
   }) {
     return _then(_$GetUsersResponseDataUserImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -123,10 +112,6 @@ class __$$GetUsersResponseDataUserImplCopyWithImpl<$Res>
       userName: null == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -136,26 +121,23 @@ class __$$GetUsersResponseDataUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GetUsersResponseDataUserImpl implements _GetUsersResponseDataUser {
   _$GetUsersResponseDataUserImpl(
-      {required this.id,
-      required this.userId,
-      required this.userName,
-      required this.email});
+      {@JsonKey(name: 'loginId') required this.userId,
+      @JsonKey(name: 'name') required this.userName});
 
   factory _$GetUsersResponseDataUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetUsersResponseDataUserImplFromJson(json);
 
+// required int id,
   @override
-  final int id;
-  @override
+  @JsonKey(name: 'loginId')
   final String userId;
   @override
+  @JsonKey(name: 'name')
   final String userName;
-  @override
-  final String email;
 
   @override
   String toString() {
-    return 'GetUsersResponseDataUser(id: $id, userId: $userId, userName: $userName, email: $email)';
+    return 'GetUsersResponseDataUser(userId: $userId, userName: $userName)';
   }
 
   @override
@@ -163,16 +145,14 @@ class _$GetUsersResponseDataUserImpl implements _GetUsersResponseDataUser {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetUsersResponseDataUserImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userName, userName) ||
-                other.userName == userName) &&
-            (identical(other.email, email) || other.email == email));
+                other.userName == userName));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, userName, email);
+  int get hashCode => Object.hash(runtimeType, userId, userName);
 
   @JsonKey(ignore: true)
   @override
@@ -191,22 +171,19 @@ class _$GetUsersResponseDataUserImpl implements _GetUsersResponseDataUser {
 
 abstract class _GetUsersResponseDataUser implements GetUsersResponseDataUser {
   factory _GetUsersResponseDataUser(
-      {required final int id,
-      required final String userId,
-      required final String userName,
-      required final String email}) = _$GetUsersResponseDataUserImpl;
+          {@JsonKey(name: 'loginId') required final String userId,
+          @JsonKey(name: 'name') required final String userName}) =
+      _$GetUsersResponseDataUserImpl;
 
   factory _GetUsersResponseDataUser.fromJson(Map<String, dynamic> json) =
       _$GetUsersResponseDataUserImpl.fromJson;
 
-  @override
-  int get id;
-  @override
+  @override // required int id,
+  @JsonKey(name: 'loginId')
   String get userId;
   @override
+  @JsonKey(name: 'name')
   String get userName;
-  @override
-  String get email;
   @override
   @JsonKey(ignore: true)
   _$$GetUsersResponseDataUserImplCopyWith<_$GetUsersResponseDataUserImpl>

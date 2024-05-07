@@ -5,6 +5,7 @@ import '../ui/home/home_page.dart';
 import '../ui/login/login_page.dart';
 import '../ui/profile/profile_page.dart';
 import '../ui/register/register_page.dart';
+import '../ui/user_list/user_list_page.dart';
 
 part 'routes.g.dart';
 
@@ -12,6 +13,7 @@ const pathHome = '/';
 const pathProfile = '/profile';
 const pathLogin = '/login';
 const pathRegister = '/register';
+const pathUserList = '/userList';
 
 @TypedGoRoute<HomeRoute>(
   path: pathHome,
@@ -21,6 +23,17 @@ class HomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const HomePage();
+}
+
+@TypedGoRoute<UserListRoute>(
+  path: pathUserList,
+)
+class UserListRoute extends GoRouteData {
+  const UserListRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const UserListPage();
 }
 
 @TypedGoRoute<ProflieRoute>(

@@ -9,7 +9,6 @@ part of 'user_login_response.dart';
 _$UserLoginResponseImpl _$$UserLoginResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$UserLoginResponseImpl(
-      result: json['result'] as String,
       data:
           UserLoginResponseData.fromJson(json['data'] as Map<String, dynamic>),
     );
@@ -17,6 +16,5 @@ _$UserLoginResponseImpl _$$UserLoginResponseImplFromJson(
 Map<String, dynamic> _$$UserLoginResponseImplToJson(
         _$UserLoginResponseImpl instance) =>
     <String, dynamic>{
-      'result': instance.result,
       'data': instance.data,
     };

@@ -20,7 +20,6 @@ GetUsersResponse _$GetUsersResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GetUsersResponse {
-  String get result => throw _privateConstructorUsedError;
   List<GetUsersResponseDataUser> get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +34,7 @@ abstract class $GetUsersResponseCopyWith<$Res> {
           GetUsersResponse value, $Res Function(GetUsersResponse) then) =
       _$GetUsersResponseCopyWithImpl<$Res, GetUsersResponse>;
   @useResult
-  $Res call({String result, List<GetUsersResponseDataUser> data});
+  $Res call({List<GetUsersResponseDataUser> data});
 }
 
 /// @nodoc
@@ -51,14 +50,9 @@ class _$GetUsersResponseCopyWithImpl<$Res, $Val extends GetUsersResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? result = null,
     Object? data = null,
   }) {
     return _then(_value.copyWith(
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as String,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -75,7 +69,7 @@ abstract class _$$GetUsersResponseImplCopyWith<$Res>
       __$$GetUsersResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String result, List<GetUsersResponseDataUser> data});
+  $Res call({List<GetUsersResponseDataUser> data});
 }
 
 /// @nodoc
@@ -89,14 +83,9 @@ class __$$GetUsersResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? result = null,
     Object? data = null,
   }) {
     return _then(_$GetUsersResponseImpl(
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as String,
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
@@ -108,16 +97,12 @@ class __$$GetUsersResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GetUsersResponseImpl implements _GetUsersResponse {
-  _$GetUsersResponseImpl(
-      {required this.result,
-      required final List<GetUsersResponseDataUser> data})
+  _$GetUsersResponseImpl({required final List<GetUsersResponseDataUser> data})
       : _data = data;
 
   factory _$GetUsersResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetUsersResponseImplFromJson(json);
 
-  @override
-  final String result;
   final List<GetUsersResponseDataUser> _data;
   @override
   List<GetUsersResponseDataUser> get data {
@@ -128,7 +113,7 @@ class _$GetUsersResponseImpl implements _GetUsersResponse {
 
   @override
   String toString() {
-    return 'GetUsersResponse(result: $result, data: $data)';
+    return 'GetUsersResponse(data: $data)';
   }
 
   @override
@@ -136,14 +121,13 @@ class _$GetUsersResponseImpl implements _GetUsersResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetUsersResponseImpl &&
-            (identical(other.result, result) || other.result == result) &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, result, const DeepCollectionEquality().hash(_data));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -162,15 +146,12 @@ class _$GetUsersResponseImpl implements _GetUsersResponse {
 
 abstract class _GetUsersResponse implements GetUsersResponse {
   factory _GetUsersResponse(
-          {required final String result,
-          required final List<GetUsersResponseDataUser> data}) =
+          {required final List<GetUsersResponseDataUser> data}) =
       _$GetUsersResponseImpl;
 
   factory _GetUsersResponse.fromJson(Map<String, dynamic> json) =
       _$GetUsersResponseImpl.fromJson;
 
-  @override
-  String get result;
   @override
   List<GetUsersResponseDataUser> get data;
   @override

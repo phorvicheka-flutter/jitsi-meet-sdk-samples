@@ -9,17 +9,13 @@ part of 'get_users_response_data_user.dart';
 _$GetUsersResponseDataUserImpl _$$GetUsersResponseDataUserImplFromJson(
         Map<String, dynamic> json) =>
     _$GetUsersResponseDataUserImpl(
-      id: (json['id'] as num).toInt(),
-      userId: json['userId'] as String,
-      userName: json['userName'] as String,
-      email: json['email'] as String,
+      userId: json['loginId'] as String,
+      userName: json['name'] as String,
     );
 
 Map<String, dynamic> _$$GetUsersResponseDataUserImplToJson(
         _$GetUsersResponseDataUserImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'userId': instance.userId,
-      'userName': instance.userName,
-      'email': instance.email,
+      'loginId': instance.userId,
+      'name': instance.userName,
     };

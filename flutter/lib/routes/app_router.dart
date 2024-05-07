@@ -37,7 +37,8 @@ class AppRouter {
 
       // the user is logged in and headed to /login, no need to login again
       if (loggedIn && goingToLogin) {
-        return const HomeRoute().location;
+        // return const HomeRoute().location;
+        return const UserListRoute().location;
       }
 
       // no need to redirect at all

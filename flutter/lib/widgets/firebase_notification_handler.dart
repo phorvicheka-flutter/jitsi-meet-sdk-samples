@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
-import '../change_notifiers/auth_change_notifier.dart';
+// import '../change_notifiers/auth_change_notifier.dart';
 import '../change_notifiers/fcm_token_change_notifier.dart';
-import '../data/models/save_fcm_token_request/save_fcm_token_request.dart';
+// import '../data/models/save_fcm_token_request/save_fcm_token_request.dart';
 import 'package:provider/provider.dart';
 
 import '../routes/app_router.dart';
@@ -30,7 +30,7 @@ class FirebaseNotificationHandler extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? userId = context.select(
+    /* String? userId = context.select(
       (AuthChangeNotifier authChangeNotifier) =>
           authChangeNotifier.user?.userId,
     );
@@ -43,7 +43,7 @@ class FirebaseNotificationHandler extends HookWidget {
     bool isSucceedSaveFcmToken = context.select(
       (FcmTokenChangeNotifier fcmTokenChangeNotifier) =>
           fcmTokenChangeNotifier.isSucceedSaveFcmToken,
-    );
+    ); */
 
     void navigatePushToRegisterPage() {
       logger.i('Navigate to RegisterRoute.');
@@ -116,7 +116,7 @@ class FirebaseNotificationHandler extends HookWidget {
       FirebaseMessaging.instance.onTokenRefresh.listen(setFcmToken);
     }
 
-    Future<void> saveFcmTokenAndReset(
+    /* Future<void> saveFcmTokenAndReset(
       String userId,
       String fcmToken,
     ) async {
@@ -125,7 +125,7 @@ class FirebaseNotificationHandler extends HookWidget {
       fcmTokenChangeNotifier.saveFcmToken(
         SaveFcmTokenRequest(userId: userId, fcmToken: fcmToken),
       );
-    }
+    } */
 
     useEffect(
       () {
@@ -145,7 +145,7 @@ class FirebaseNotificationHandler extends HookWidget {
       [],
     );
 
-    useEffect(
+    /* useEffect(
       () {
         if (!isSucceedSaveFcmToken) {
           bool isNeedToSaveFcmToken = fcmToken != null && userId != null;
@@ -157,7 +157,7 @@ class FirebaseNotificationHandler extends HookWidget {
         return null;
       },
       [isSucceedSaveFcmToken, userId, fcmToken],
-    );
+    ); */
 
     return child;
   }

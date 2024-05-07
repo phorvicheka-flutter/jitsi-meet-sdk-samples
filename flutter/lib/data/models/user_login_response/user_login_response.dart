@@ -8,7 +8,6 @@ part 'user_login_response.g.dart';
 @freezed
 class UserLoginResponse with _$UserLoginResponse {
   factory UserLoginResponse({
-    required String result,
     required UserLoginResponseData data,
   }) = _UserLoginResponse;
 

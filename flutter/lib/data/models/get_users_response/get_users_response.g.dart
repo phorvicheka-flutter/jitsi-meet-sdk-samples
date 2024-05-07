@@ -9,7 +9,6 @@ part of 'get_users_response.dart';
 _$GetUsersResponseImpl _$$GetUsersResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$GetUsersResponseImpl(
-      result: json['result'] as String,
       data: (json['data'] as List<dynamic>)
           .map((e) =>
               GetUsersResponseDataUser.fromJson(e as Map<String, dynamic>))
@@ -19,6 +18,5 @@ _$GetUsersResponseImpl _$$GetUsersResponseImplFromJson(
 Map<String, dynamic> _$$GetUsersResponseImplToJson(
         _$GetUsersResponseImpl instance) =>
     <String, dynamic>{
-      'result': instance.result,
       'data': instance.data,
     };

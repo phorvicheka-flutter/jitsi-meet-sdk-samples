@@ -8,7 +8,6 @@ part 'get_users_response.g.dart';
 @freezed
 class GetUsersResponse with _$GetUsersResponse {
   factory GetUsersResponse({
-    required String result,
     required List<GetUsersResponseDataUser> data,
   }) = _GetUsersResponse;
 

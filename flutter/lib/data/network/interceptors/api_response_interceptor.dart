@@ -9,11 +9,11 @@ class ApiResponseInterceptor extends Interceptor {
       case HttpStatus.ok:
         try {
           final responseBodyData = response.data['data'];
-          final responseBodyMessage = response.data['message'];
-          final responseBodyResult = response.data['result'];
+          /* final responseBodyMessage = response.data['message'];
+          final responseBodyResult = response.data['result']; */
 
           // case: fail - modify response status code from 'ok' 200 to 'error' 401 or reject (throw error)
-          if (responseBodyResult == 'fail' && responseBodyMessage != null) {
+          /* if (responseBodyResult == 'fail' && responseBodyMessage != null) {
             final responseBodyErrorCode = response.data['errorCode'];
             if (responseBodyErrorCode != null &&
                 responseBodyErrorCode == HttpStatus.unauthorized) {
@@ -42,7 +42,12 @@ class ApiResponseInterceptor extends Interceptor {
               'data': responseBodyData,
             };
             return handler.next(response);
-          }
+          } */
+
+          response.data = {
+            'data': responseBodyData,
+          };
+          return handler.next(response);
         } catch (e) {
           handler.reject(
             DioException(

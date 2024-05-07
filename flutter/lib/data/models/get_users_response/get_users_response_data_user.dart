@@ -6,10 +6,10 @@ part 'get_users_response_data_user.g.dart';
 @freezed
 class GetUsersResponseDataUser with _$GetUsersResponseDataUser {
   factory GetUsersResponseDataUser({
-    required int id,
-    required String userId,
-    required String userName,
-    required String email,
+    // required int id,
+    @JsonKey(name: 'loginId') required String userId,
+    @JsonKey(name: 'name') required String userName,
+    // required String email,
   }) = _GetUsersResponseDataUser;
 
   factory GetUsersResponseDataUser.fromJson(Map<String, dynamic> json) =>
