@@ -5,13 +5,22 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 // import '../change_notifiers/auth_change_notifier.dart';
+import '../change_notifiers/auth_change_notifier.dart';
+import '../change_notifiers/fcm_call_change_notifier.dart';
 import '../change_notifiers/fcm_token_change_notifier.dart';
 // import '../data/models/save_fcm_token_request/save_fcm_token_request.dart';
 import 'package:provider/provider.dart';
 
+import '../data/models/user/user.dart';
 import '../routes/app_router.dart';
 import '../routes/routes.dart';
+import '../utils/callkit_incoming_util.dart';
 import '../utils/firebase_service_util.dart';
+import 'package:logger/logger.dart';
+
+import '../utils/jitsi_meet_util.dart';
+
+var logger = Logger();
 
 const String subscribedTopic = 'global';
 
@@ -21,6 +30,12 @@ Future<void> _handleMessageOfBackgroundNotification(
   await Firebase.initializeApp();
   logger.i('_handleMessageOfBackgroundNotification');
   logger.i(message.toMap());
+  final String? notificationBody = message.notification?.body;
+  if (notificationBody != null && notificationBody.isNotEmpty) {
+    CallkitIncomingUtil.showCallkitIncoming(
+      notificationBody,
+    );
+  }
 }
 
 class FirebaseNotificationHandler extends HookWidget {
@@ -44,6 +59,46 @@ class FirebaseNotificationHandler extends HookWidget {
       (FcmTokenChangeNotifier fcmTokenChangeNotifier) =>
           fcmTokenChangeNotifier.isSucceedSaveFcmToken,
     ); */
+    User? user = context.select(
+      (AuthChangeNotifier authChangeNotifier) => authChangeNotifier.user,
+    );
+
+    Future<void> checkAndNavigationCallingPage() async {
+      final currentCall = await CallkitIncomingUtil.getCurrentCall();
+      if (currentCall != null) {
+        // join room of Jitsi Meet
+        final roomName = currentCall['extra']['roomName'];
+        final callId = currentCall['extra']['id'];
+        if (roomName != null && callId != null) {
+          JitsiMeetUtil.joinRoom(
+            roomName: roomName,
+            user: user,
+            callbackOnReadyToClose: () {
+              CallkitIncomingUtil.endCurrentCall(callId);
+              logger.d('>>> Called: CallkitIncomingUtil.endCurrentCall.');
+              // CallkitIncomingUtil.endAllCalls();
+              context.read<FcmCallChangeNotifier>().endCall();
+            },
+          );
+        }
+      }
+    }
+
+    useEffect(
+      () {
+        checkAndNavigationCallingPage();
+        return null;
+      },
+      const [],
+    );
+
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current == AppLifecycleState.resumed) {
+        //Check call when open app from background
+        checkAndNavigationCallingPage();
+      }
+      return null;
+    });
 
     void navigatePushToRegisterPage() {
       logger.i('Navigate to RegisterRoute.');
@@ -88,6 +143,18 @@ class FirebaseNotificationHandler extends HookWidget {
     ) async {
       logger.i('_handleMessageOfForegroundNotification');
       logger.i(message.toMap());
+      final String? notificationBody = message.notification?.body;
+      if (notificationBody != null && notificationBody.isNotEmpty) {
+        // Show CallkitIncoming only if not in call
+        bool isIncall = context.read<FcmCallChangeNotifier>().isInCall();
+        if (!isIncall) {
+          CallkitIncomingUtil.showCallkitIncoming(
+            notificationBody,
+          );
+        } else {
+          logger.d('handleMessageOfForegroundNotification: user is in call!!!');
+        }
+      }
     }
 
     void onDidReceiveNotificationResponse(
