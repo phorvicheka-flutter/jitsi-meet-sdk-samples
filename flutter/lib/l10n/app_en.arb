@@ -1,0 +1,48 @@
+{
+  "@buttonClickCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "@price": {
+    "placeholders": {
+      "value": {
+        "format": "currency",
+        "type": "double"
+      }
+    }
+  },
+  "@todayDate": {
+    "placeholders": {
+      "date": {
+        "format": "yMMMd",
+        "type": "DateTime"
+      }
+    }
+  },
+  "appTitle": "Flutter Demo",
+  "buttonClickCount": "{count,plural, =0{zero time} =1{{count} time} other{{count} times}}",
+  "buttonLogin": "Login",
+  "buttonProfile": "Profile",
+  "buttonSignUp": "Sign Up",
+  "errorNoInternetConnection": "No internet connection.",
+  "formErrorPasswordsDontMatch": "Passwords Don't Match.",
+  "formLabelConfirmedPassword": "Confirmed password",
+  "formLabelEmail": "Email",
+  "formLabelPassword": "Password",
+  "formLabelUserId": "User ID",
+  "formLabelUsername": "Username",
+  "helloWorld": "Hello World!",
+  "homeTitle": "Flutter Demo Home Page",
+  "labelButtonClickCount": "You have pushed the button: ",
+  "labelTextDonthaveAccount": "Don't have an Account? ",
+  "labelTextLanguageEnglish": "English",
+  "labelTextLanguageKorean": "Korean",
+  "loginTitle": "Flutter Demo Login Page",
+  "price": "Price: {value}",
+  "profileTitle": "Flutter Demo Profile Page",
+  "todayDate": "Today date: {date}"
+}
