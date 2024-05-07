@@ -137,6 +137,7 @@ class FirebaseNotificationHandler extends HookWidget {
           handleMessageOfBackgroundNotification:
               _handleMessageOfBackgroundNotification,
           onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+          isUseFlutterLocalNotificationsPlugin: false,
         );
         setupToken();
 

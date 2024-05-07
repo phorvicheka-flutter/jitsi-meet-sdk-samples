@@ -40,10 +40,11 @@ dependencies:
   jitsi_meet_flutter_sdk: ^0.4.2
   firebase_messaging: ^14.9.1
   firebase_core: ^2.30.1
-  flutter_local_notifications: ^17.1.1
+  flutter_local_notifications: ^17.1.2
   firebase_crashlytics: ^3.5.4
+  firebase_analytics: ^10.10.4
 
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.8
   logger: ^2.2.0
   dynamic_color: ^1.7.0
   google_fonts: ^6.2.1
@@ -58,7 +59,7 @@ dependencies:
   json_annotation: ^4.9.0
   get_it: ^7.7.0
   shared_preferences: ^2.2.3
-  connectivity_plus: ^6.0.2
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:

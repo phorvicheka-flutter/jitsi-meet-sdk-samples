@@ -19,6 +19,7 @@ abstract class FirebaseServiceUtil {
     void Function(RemoteMessage)? handleMessageOfForegroundNotification,
     void Function(NotificationResponse)? onDidReceiveNotificationResponse,
     Future<void> Function(RemoteMessage)? handleMessageOfBackgroundNotification,
+    bool isUseFlutterLocalNotificationsPlugin = true,
   }) {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     _requestPermission(messaging);
@@ -38,6 +39,8 @@ abstract class FirebaseServiceUtil {
       messaging,
       handleMessageOfForegroundNotification,
       onDidReceiveNotificationResponse,
+      isUseFlutterLocalNotificationsPlugin:
+          isUseFlutterLocalNotificationsPlugin,
     );
 
     // setup background notification
@@ -108,8 +111,9 @@ abstract class FirebaseServiceUtil {
   static Future<void> _setupForegroundNotification(
     FirebaseMessaging messaging,
     void Function(RemoteMessage)? handleMessageOfForegroundNotification,
-    void Function(NotificationResponse)? onDidReceiveNotificationResponse,
-  ) async {
+    void Function(NotificationResponse)? onDidReceiveNotificationResponse, {
+    bool isUseFlutterLocalNotificationsPlugin = true,
+  }) async {
     if (Platform.isIOS) {
       // Foreground Notification - iOS Configuration
       await messaging.setForegroundNotificationPresentationOptions(
@@ -126,45 +130,48 @@ abstract class FirebaseServiceUtil {
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
-        const AndroidNotificationChannel channel = AndroidNotificationChannel(
-          channelId,
-          channelName,
-          description: channelDescription,
-          importance: Importance.max,
-        );
+        if (isUseFlutterLocalNotificationsPlugin) {
+          const AndroidNotificationChannel channel = AndroidNotificationChannel(
+            channelId,
+            channelName,
+            description: channelDescription,
+            importance: Importance.max,
+          );
 
-        final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-            FlutterLocalNotificationsPlugin();
-        // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-        const AndroidInitializationSettings initializationSettingsAndroid =
-            AndroidInitializationSettings('app_icon');
-        const InitializationSettings initializationSettings =
-            InitializationSettings(
-          android: initializationSettingsAndroid,
-        );
-        flutterLocalNotificationsPlugin.initialize(
-          initializationSettings,
-          onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-        );
+          final FlutterLocalNotificationsPlugin
+              flutterLocalNotificationsPlugin =
+              FlutterLocalNotificationsPlugin();
+          // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+          const AndroidInitializationSettings initializationSettingsAndroid =
+              AndroidInitializationSettings('app_icon');
+          const InitializationSettings initializationSettings =
+              InitializationSettings(
+            android: initializationSettingsAndroid,
+          );
+          flutterLocalNotificationsPlugin.initialize(
+            initializationSettings,
+            onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+          );
 
-        await flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.createNotificationChannel(channel);
+          await flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.createNotificationChannel(channel);
 
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              icon: android.smallIcon,
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                icon: android.smallIcon,
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
 
       if (handleMessageOfForegroundNotification != null) {
