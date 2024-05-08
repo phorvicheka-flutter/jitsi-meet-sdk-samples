@@ -42,24 +42,4 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     _callKitEventListener = callKitEventListener;
     notifyListeners();
   }
-
-  dynamic _currentCall;
-  dynamic get currentCall => _currentCall;
-  void setCurrentCall(dynamic currentCall) {
-    _currentCall = currentCall;
-    notifyListeners();
-  }
-
-  bool isInCall() {
-    return _currentCall != null;
-  }
-
-  void endCall() {
-    _currentCall = null;
-    notifyListeners();
-  }
-
-  void callStarted(dynamic callInfo) {
-    setCurrentCall(callInfo);
-  }
 }

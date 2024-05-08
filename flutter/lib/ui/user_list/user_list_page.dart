@@ -69,11 +69,7 @@ class UserListPage extends HookWidget {
               // initialize listenerEvent of FlutterCallkitIncoming
               var newCallKitEventListener = CallkitIncomingUtil.listenerEvent(
                 callbackOnActionCallAccept: (event) {
-                  logger.d(event);
-                  final fcmCallChangeNotifier =
-                      context.read<FcmCallChangeNotifier>();
-                  fcmCallChangeNotifier
-                      .callStarted(CallkitIncomingUtil.getCurrentCall());
+                  logger.d('callbackOnActionCallAccept');
                   // join room of Jitsi Meet
                   final roomName = event.body['extra']['roomName'];
                   final callId = event.body['id'];
@@ -87,10 +83,15 @@ class UserListPage extends HookWidget {
                           '>>> Called: CallkitIncomingUtil.endCurrentCall.',
                         );
                         // CallkitIncomingUtil.endAllCalls();
-                        fcmCallChangeNotifier.endCall();
                       },
                     );
                   }
+                },
+                callbackOnActionCallDecline: (event) {
+                  logger.d('callbackOnActionCallDecline');
+                },
+                callbackOnActionCallEnded: (event) {
+                  logger.d('callbackOnActionCallEnded');
                 },
               );
               if (newCallKitEventListener != null) {

@@ -6,7 +6,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 // import '../change_notifiers/auth_change_notifier.dart';
 import '../change_notifiers/auth_change_notifier.dart';
-import '../change_notifiers/fcm_call_change_notifier.dart';
 import '../change_notifiers/fcm_token_change_notifier.dart';
 // import '../data/models/save_fcm_token_request/save_fcm_token_request.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +23,7 @@ var logger = Logger();
 
 const String subscribedTopic = 'global';
 
+@pragma('vm:entry-point')
 Future<void> _handleMessageOfBackgroundNotification(
   RemoteMessage message,
 ) async {
@@ -68,7 +68,7 @@ class FirebaseNotificationHandler extends HookWidget {
       if (currentCall != null) {
         // join room of Jitsi Meet
         final roomName = currentCall['extra']['roomName'];
-        final callId = currentCall['extra']['id'];
+        final callId = currentCall['id'];
         if (roomName != null && callId != null) {
           JitsiMeetUtil.joinRoom(
             roomName: roomName,
@@ -76,8 +76,8 @@ class FirebaseNotificationHandler extends HookWidget {
             callbackOnReadyToClose: () {
               CallkitIncomingUtil.endCurrentCall(callId);
               logger.d('>>> Called: CallkitIncomingUtil.endCurrentCall.');
-              // CallkitIncomingUtil.endAllCalls();
-              context.read<FcmCallChangeNotifier>().endCall();
+              // call this method to make sure there is no any calls left
+              CallkitIncomingUtil.endAllCalls();
             },
           );
         }
@@ -146,8 +146,8 @@ class FirebaseNotificationHandler extends HookWidget {
       final String? notificationBody = message.notification?.body;
       if (notificationBody != null && notificationBody.isNotEmpty) {
         // Show CallkitIncoming only if not in call
-        bool isIncall = context.read<FcmCallChangeNotifier>().isInCall();
-        if (!isIncall) {
+        bool hasActiveCall = await CallkitIncomingUtil.hasActiveCall();
+        if (!hasActiveCall) {
           CallkitIncomingUtil.showCallkitIncoming(
             notificationBody,
           );

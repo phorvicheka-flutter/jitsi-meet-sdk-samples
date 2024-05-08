@@ -85,7 +85,7 @@ abstract class CallkitIncomingUtil {
 
   static Future<dynamic> getCurrentCall() async {
     //check current call from pushkit if possible
-    var calls = await FlutterCallkitIncoming.activeCalls();
+    final calls = await FlutterCallkitIncoming.activeCalls();
     if (calls is List) {
       if (calls.isNotEmpty) {
         logger.d('getCurrentCall - calls: $calls');
@@ -191,5 +191,11 @@ abstract class CallkitIncomingUtil {
 
   static Future<void> endCurrentCall(String currentUuid) async {
     await FlutterCallkitIncoming.endCall(currentUuid);
+  }
+
+  static Future<bool> hasActiveCall() async {
+    //check current call from pushkit if possible
+    final call = await getCurrentCall();
+    return call != null;
   }
 }

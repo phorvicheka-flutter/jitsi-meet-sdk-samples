@@ -172,10 +172,10 @@ abstract class FirebaseServiceUtil {
             ),
           );
         }
-      }
 
-      if (handleMessageOfForegroundNotification != null) {
-        handleMessageOfForegroundNotification(message);
+        if (handleMessageOfForegroundNotification != null) {
+          handleMessageOfForegroundNotification(message);
+        }
       }
     });
   }
