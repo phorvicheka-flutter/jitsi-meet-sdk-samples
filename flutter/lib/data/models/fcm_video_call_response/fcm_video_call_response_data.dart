@@ -7,6 +7,12 @@ part 'fcm_video_call_response_data.g.dart';
 class FcmVideoCallResponseData with _$FcmVideoCallResponseData {
   factory FcmVideoCallResponseData({
     required String roomName,
+    required String callerLoginId,
+    required String callerName,
+    required String calleeLoginId,
+    required String calleeName,
+    String? callStatus,
+    String? callType,
   }) = _FcmVideoCallResponseData;
 
   factory FcmVideoCallResponseData.fromJson(Map<String, dynamic> json) =>

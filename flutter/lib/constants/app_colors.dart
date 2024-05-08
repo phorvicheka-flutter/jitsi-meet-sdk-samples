@@ -21,4 +21,20 @@ abstract class AppColors {
   );
 
   static const seedColor = Color(_primaryColorValue);
+
+  static const MaterialColor grey =
+      MaterialColor(_greyPrimaryValue, <int, Color>{
+    100: Color(0xFFF8F9FA),
+    200: Color(0xFFE9ECEF),
+    300: Color(0xFFDEE2E6),
+    400: Color(0xFFCED4DA),
+    500: Color(_greyPrimaryValue),
+    600: Color(0xFF6C757D),
+    700: Color(0xFF495057),
+    800: Color(0xFF343A40),
+    900: Color(0xFF212529),
+  });
+  static const int _greyPrimaryValue = 0xFFADB5BD;
+
+  static const Color danger = Color(0xFFDC3545);
 }

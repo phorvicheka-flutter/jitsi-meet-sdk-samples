@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../ui/home/home_page.dart';
 import '../ui/login/login_page.dart';
+import '../ui/outgoing_call/outgoing_call_page.dart';
 import '../ui/profile/profile_page.dart';
 import '../ui/register/register_page.dart';
 import '../ui/user_list/user_list_page.dart';
@@ -14,6 +15,7 @@ const pathProfile = '/profile';
 const pathLogin = '/login';
 const pathRegister = '/register';
 const pathUserList = '/userList';
+const pathOutgoingCall = '/outgoingCall';
 
 @TypedGoRoute<HomeRoute>(
   path: pathHome,
@@ -68,4 +70,26 @@ class RegisterRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => RegisterPage();
+}
+
+@TypedGoRoute<OutgoinCallRoute>(
+  path: pathOutgoingCall,
+)
+class OutgoinCallRoute extends GoRouteData {
+  const OutgoinCallRoute({
+    required this.roomName,
+    required this.calleeName,
+    this.calleeAvatar,
+  });
+
+  final String roomName;
+  final String calleeName;
+  final String? calleeAvatar;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => OutgoingCallPage(
+        roomName: roomName,
+        calleeName: calleeName,
+        calleeAvatar: calleeAvatar,
+      );
 }

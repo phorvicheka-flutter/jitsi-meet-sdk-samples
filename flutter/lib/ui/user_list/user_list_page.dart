@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../change_notifiers/fcm_call_change_notifier.dart';
 import '../../data/enums/api_request_state.dart';
+import '../../data/models/fcm_video_call_response/fcm_video_call_response_data.dart';
 import '../../data/models/get_users_response/get_users_response_data_user.dart';
 import 'package:provider/provider.dart';
 
@@ -13,15 +14,20 @@ import '../../change_notifiers/auth_change_notifier.dart';
 // import '../../change_notifiers/fcm_token_change_notifier.dart';
 import '../../change_notifiers/users_change_notifier.dart';
 import '../../data/models/user/user.dart';
+import '../../routes/routes.dart';
 import '../../utils/callkit_incoming_util.dart';
 import 'package:logger/logger.dart';
 
+import '../../utils/dialogs_util.dart';
 import '../../utils/jitsi_meet_util.dart';
 
 var logger = Logger();
 
 class UserListPage extends HookWidget {
   const UserListPage({super.key});
+
+  static final GlobalKey<State> _globalKeyForLoadingDialog = GlobalKey<State>();
+  static final GlobalKey<State> _globalKeyForErrorDialog = GlobalKey<State>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +41,13 @@ class UserListPage extends HookWidget {
     ); */
     List<GetUsersResponseDataUser> userList =
         context.watch<UsersChangeNotifier>().userList;
-    ApiRequestState apiRequestState = context.select(
+    ApiRequestState apiRequestStateOfFcmCallChangeNotifier = context.select(
       (FcmCallChangeNotifier fcmCallChangeNotifier) =>
           fcmCallChangeNotifier.apiRequestState,
     );
-    String roomName = context.select(
+    FcmVideoCallResponseData? fcmVideoCallResponseData = context.select(
       (FcmCallChangeNotifier fcmCallChangeNotifier) =>
-          fcmCallChangeNotifier.roomName,
+          fcmCallChangeNotifier.fcmVideoCallResponseData,
     );
 
     StreamSubscription<CallEvent?>? callKitEventListener = context.select(
@@ -64,6 +70,7 @@ class UserListPage extends HookWidget {
           () async {
             await context.read<UsersChangeNotifier>().getUsers();
 
+            // #region - init incoming callkit event listener
             // https://github.com/hiennguyen92/flutter_callkit_incoming/issues/189#issuecomment-1443112119
             if (callKitEventListener == null) {
               // initialize listenerEvent of FlutterCallkitIncoming
@@ -100,6 +107,7 @@ class UserListPage extends HookWidget {
             } else {
               debugPrint('UserListPage: already have a listener for callkit.');
             }
+            // #endregion
           },
         );
 
@@ -110,13 +118,52 @@ class UserListPage extends HookWidget {
 
     useEffect(
       () {
-        if (apiRequestState.isSuccess && roomName.isNotEmpty) {
-          // Create and join room of Jitsi Meet
-          JitsiMeetUtil.joinRoom(roomName: roomName, user: user);
+        if (apiRequestStateOfFcmCallChangeNotifier.isSuccess) {
+          final currentContextOfLoadingDialog =
+              _globalKeyForLoadingDialog.currentContext;
+          if (currentContextOfLoadingDialog != null) {
+            // close loading dialog
+            Navigator.of(currentContextOfLoadingDialog).pop();
+          }
+
+          if (fcmVideoCallResponseData != null) {
+            // Navigate to outgoing call page
+            final roomName = fcmVideoCallResponseData.roomName;
+            final calleeName = fcmVideoCallResponseData.calleeName;
+            // TODO: calleeAvatar
+            const calleeAvatar = 'https://i.pravatar.cc/100';
+            Future.microtask(
+              () => OutgoinCallRoute(
+                roomName: roomName,
+                calleeName: calleeName,
+                calleeAvatar: calleeAvatar,
+              ).push(context),
+            );
+
+            // TODO: move this code - Create and join room of Jitsi Meet
+            // joinRoom only when get fcm push notification - call accepted
+            // JitsiMeetUtil.joinRoom(roomName: roomName, user: user);
+          }
+        }
+
+        if (apiRequestStateOfFcmCallChangeNotifier.isError) {
+          final currentContextOfLoadingDialog =
+              _globalKeyForLoadingDialog.currentContext;
+          if (currentContextOfLoadingDialog != null) {
+            Navigator.of(
+              currentContextOfLoadingDialog,
+            ).pop();
+          }
+          Future.microtask(
+            () => DialogsUtil.showErrorDialog(
+              context,
+              key: _globalKeyForErrorDialog,
+            ),
+          );
         }
         return null;
       },
-      [apiRequestState, roomName],
+      [apiRequestStateOfFcmCallChangeNotifier, fcmVideoCallResponseData],
     );
 
     /* void handleAudioCall(BuildContext context, GetUsersResponseDataUser user) {
@@ -128,6 +175,8 @@ class UserListPage extends HookWidget {
       BuildContext context,
       GetUsersResponseDataUser user,
     ) async {
+      // show the loading dialog
+      DialogsUtil.showLoadingDialog(context, key: _globalKeyForLoadingDialog);
       // Implement video call functionality
       logger.d('Initiate video call to loginId: ${user.userId}');
       await context

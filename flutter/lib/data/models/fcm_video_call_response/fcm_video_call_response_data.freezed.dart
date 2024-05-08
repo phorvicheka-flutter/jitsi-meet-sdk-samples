@@ -22,6 +22,12 @@ FcmVideoCallResponseData _$FcmVideoCallResponseDataFromJson(
 /// @nodoc
 mixin _$FcmVideoCallResponseData {
   String get roomName => throw _privateConstructorUsedError;
+  String get callerLoginId => throw _privateConstructorUsedError;
+  String get callerName => throw _privateConstructorUsedError;
+  String get calleeLoginId => throw _privateConstructorUsedError;
+  String get calleeName => throw _privateConstructorUsedError;
+  String? get callStatus => throw _privateConstructorUsedError;
+  String? get callType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +41,14 @@ abstract class $FcmVideoCallResponseDataCopyWith<$Res> {
           $Res Function(FcmVideoCallResponseData) then) =
       _$FcmVideoCallResponseDataCopyWithImpl<$Res, FcmVideoCallResponseData>;
   @useResult
-  $Res call({String roomName});
+  $Res call(
+      {String roomName,
+      String callerLoginId,
+      String callerName,
+      String calleeLoginId,
+      String calleeName,
+      String? callStatus,
+      String? callType});
 }
 
 /// @nodoc
@@ -53,12 +66,42 @@ class _$FcmVideoCallResponseDataCopyWithImpl<$Res,
   @override
   $Res call({
     Object? roomName = null,
+    Object? callerLoginId = null,
+    Object? callerName = null,
+    Object? calleeLoginId = null,
+    Object? calleeName = null,
+    Object? callStatus = freezed,
+    Object? callType = freezed,
   }) {
     return _then(_value.copyWith(
       roomName: null == roomName
           ? _value.roomName
           : roomName // ignore: cast_nullable_to_non_nullable
               as String,
+      callerLoginId: null == callerLoginId
+          ? _value.callerLoginId
+          : callerLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      callerName: null == callerName
+          ? _value.callerName
+          : callerName // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeLoginId: null == calleeLoginId
+          ? _value.calleeLoginId
+          : calleeLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeName: null == calleeName
+          ? _value.calleeName
+          : calleeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      callStatus: freezed == callStatus
+          ? _value.callStatus
+          : callStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      callType: freezed == callType
+          ? _value.callType
+          : callType // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -72,7 +115,14 @@ abstract class _$$FcmVideoCallResponseDataImplCopyWith<$Res>
       __$$FcmVideoCallResponseDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String roomName});
+  $Res call(
+      {String roomName,
+      String callerLoginId,
+      String callerName,
+      String calleeLoginId,
+      String calleeName,
+      String? callStatus,
+      String? callType});
 }
 
 /// @nodoc
@@ -89,12 +139,42 @@ class __$$FcmVideoCallResponseDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? roomName = null,
+    Object? callerLoginId = null,
+    Object? callerName = null,
+    Object? calleeLoginId = null,
+    Object? calleeName = null,
+    Object? callStatus = freezed,
+    Object? callType = freezed,
   }) {
     return _then(_$FcmVideoCallResponseDataImpl(
       roomName: null == roomName
           ? _value.roomName
           : roomName // ignore: cast_nullable_to_non_nullable
               as String,
+      callerLoginId: null == callerLoginId
+          ? _value.callerLoginId
+          : callerLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      callerName: null == callerName
+          ? _value.callerName
+          : callerName // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeLoginId: null == calleeLoginId
+          ? _value.calleeLoginId
+          : calleeLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeName: null == calleeName
+          ? _value.calleeName
+          : calleeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      callStatus: freezed == callStatus
+          ? _value.callStatus
+          : callStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      callType: freezed == callType
+          ? _value.callType
+          : callType // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -102,17 +182,36 @@ class __$$FcmVideoCallResponseDataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FcmVideoCallResponseDataImpl implements _FcmVideoCallResponseData {
-  _$FcmVideoCallResponseDataImpl({required this.roomName});
+  _$FcmVideoCallResponseDataImpl(
+      {required this.roomName,
+      required this.callerLoginId,
+      required this.callerName,
+      required this.calleeLoginId,
+      required this.calleeName,
+      this.callStatus,
+      this.callType});
 
   factory _$FcmVideoCallResponseDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$FcmVideoCallResponseDataImplFromJson(json);
 
   @override
   final String roomName;
+  @override
+  final String callerLoginId;
+  @override
+  final String callerName;
+  @override
+  final String calleeLoginId;
+  @override
+  final String calleeName;
+  @override
+  final String? callStatus;
+  @override
+  final String? callType;
 
   @override
   String toString() {
-    return 'FcmVideoCallResponseData(roomName: $roomName)';
+    return 'FcmVideoCallResponseData(roomName: $roomName, callerLoginId: $callerLoginId, callerName: $callerName, calleeLoginId: $calleeLoginId, calleeName: $calleeName, callStatus: $callStatus, callType: $callType)';
   }
 
   @override
@@ -121,12 +220,25 @@ class _$FcmVideoCallResponseDataImpl implements _FcmVideoCallResponseData {
         (other.runtimeType == runtimeType &&
             other is _$FcmVideoCallResponseDataImpl &&
             (identical(other.roomName, roomName) ||
-                other.roomName == roomName));
+                other.roomName == roomName) &&
+            (identical(other.callerLoginId, callerLoginId) ||
+                other.callerLoginId == callerLoginId) &&
+            (identical(other.callerName, callerName) ||
+                other.callerName == callerName) &&
+            (identical(other.calleeLoginId, calleeLoginId) ||
+                other.calleeLoginId == calleeLoginId) &&
+            (identical(other.calleeName, calleeName) ||
+                other.calleeName == calleeName) &&
+            (identical(other.callStatus, callStatus) ||
+                other.callStatus == callStatus) &&
+            (identical(other.callType, callType) ||
+                other.callType == callType));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, roomName);
+  int get hashCode => Object.hash(runtimeType, roomName, callerLoginId,
+      callerName, calleeLoginId, calleeName, callStatus, callType);
 
   @JsonKey(ignore: true)
   @override
@@ -144,14 +256,32 @@ class _$FcmVideoCallResponseDataImpl implements _FcmVideoCallResponseData {
 }
 
 abstract class _FcmVideoCallResponseData implements FcmVideoCallResponseData {
-  factory _FcmVideoCallResponseData({required final String roomName}) =
-      _$FcmVideoCallResponseDataImpl;
+  factory _FcmVideoCallResponseData(
+      {required final String roomName,
+      required final String callerLoginId,
+      required final String callerName,
+      required final String calleeLoginId,
+      required final String calleeName,
+      final String? callStatus,
+      final String? callType}) = _$FcmVideoCallResponseDataImpl;
 
   factory _FcmVideoCallResponseData.fromJson(Map<String, dynamic> json) =
       _$FcmVideoCallResponseDataImpl.fromJson;
 
   @override
   String get roomName;
+  @override
+  String get callerLoginId;
+  @override
+  String get callerName;
+  @override
+  String get calleeLoginId;
+  @override
+  String get calleeName;
+  @override
+  String? get callStatus;
+  @override
+  String? get callType;
   @override
   @JsonKey(ignore: true)
   _$$FcmVideoCallResponseDataImplCopyWith<_$FcmVideoCallResponseDataImpl>

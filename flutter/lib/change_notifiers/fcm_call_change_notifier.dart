@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_callkit_incoming/entities/call_event.dart';
 
 import '../data/models/fcm_video_call_response/fcm_video_call_response.dart';
+import '../data/models/fcm_video_call_response/fcm_video_call_response_data.dart';
 import '../data/repositories/fcm_call_repository.dart';
 import 'base_change_notifier.dart';
 
@@ -10,11 +11,14 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
   FcmCallChangeNotifier(this.fcmCallRepository);
 
   final FcmCallRepository fcmCallRepository;
-  String _roomName = '';
-  String get roomName => _roomName;
 
-  void setRoomName(String roomName) {
-    _roomName = roomName;
+  FcmVideoCallResponseData? _fcmVideoCallResponseData;
+  FcmVideoCallResponseData? get fcmVideoCallResponseData =>
+      _fcmVideoCallResponseData;
+  void setFcmVideoCallResponseData(
+    FcmVideoCallResponseData fcmVideoCallResponseData,
+  ) {
+    _fcmVideoCallResponseData = fcmVideoCallResponseData;
     notifyListeners();
   }
 
@@ -26,7 +30,7 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
         FcmVideoCallResponse fcmVideoCallResponse =
             await fcmCallRepository.createFcmVideoCall(loginId);
 
-        setRoomName(fcmVideoCallResponse.data.roomName);
+        setFcmVideoCallResponseData(fcmVideoCallResponse.data);
       },
     );
   }

@@ -12,6 +12,7 @@ List<RouteBase> get $appRoutes => [
       $proflieRoute,
       $loginRoute,
       $registerRoute,
+      $outgoinCallRoute,
     ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -117,6 +118,37 @@ extension $RegisterRouteExtension on RegisterRoute {
 
   String get location => GoRouteData.$location(
         '/register',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $outgoinCallRoute => GoRouteData.$route(
+      path: '/outgoingCall',
+      factory: $OutgoinCallRouteExtension._fromState,
+    );
+
+extension $OutgoinCallRouteExtension on OutgoinCallRoute {
+  static OutgoinCallRoute _fromState(GoRouterState state) => OutgoinCallRoute(
+        roomName: state.uri.queryParameters['room-name']!,
+        calleeName: state.uri.queryParameters['callee-name']!,
+        calleeAvatar: state.uri.queryParameters['callee-avatar'],
+      );
+
+  String get location => GoRouteData.$location(
+        '/outgoingCall',
+        queryParams: {
+          'room-name': roomName,
+          'callee-name': calleeName,
+          if (calleeAvatar != null) 'callee-avatar': calleeAvatar,
+        },
       );
 
   void go(BuildContext context) => context.go(location);
