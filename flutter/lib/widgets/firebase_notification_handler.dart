@@ -94,8 +94,22 @@ class FirebaseNotificationHandler extends HookWidget {
 
     useOnAppLifecycleStateChange((previous, current) {
       if (current == AppLifecycleState.resumed) {
+        logger.d(
+          'AppLifecycleState.resumed',
+        );
         //Check call when open app from background
         checkAndNavigationCallingPage();
+      }
+      if (current == AppLifecycleState.paused) {
+        //Check call when open app from background
+        logger.d(
+          'AppLifecycleState.paused',
+        );
+      }
+      if (current == AppLifecycleState.detached) {
+        logger.d(
+          'AppLifecycleState.detached - onDestroy - need to call API Video terminate: DELETE /video/room/:roomName',
+        );
       }
       return null;
     });

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../constants/app_colors.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger();
 
 class OutgoingCallPage extends HookWidget {
   const OutgoingCallPage({
@@ -17,6 +20,18 @@ class OutgoingCallPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    useEffect(
+      () {
+        return () {
+          // TODO: Send request to "Video terminate" Api
+          logger.d(
+            'useEffect - onDestroy - need to call API Video terminate: DELETE /video/room/:roomName',
+          );
+        };
+      },
+      const [],
+    );
+
     return Scaffold(
       body: Center(
         child: Container(
