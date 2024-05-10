@@ -13,18 +13,26 @@ abstract class JitsiMeetUtil {
   static void joinRoom({
     required String roomName,
     User? user,
+    void Function()? callbackOnConferenceJoined,
+    void Function()? callbackOnParticipantJoined,
     void Function()? callbackOnReadyToClose,
   }) {
     final jitsiMeet = JitsiMeet();
     final listener = JitsiMeetEventListener(
       conferenceJoined: (url) {
         debugPrint('conferenceJoined: url: $url');
+        if (callbackOnConferenceJoined != null) {
+          callbackOnConferenceJoined();
+        }
       },
       participantJoined: (email, name, role, participantId) {
         debugPrint(
           'participantJoined: email: $email, name: $name, role: $role, '
           'participantId: $participantId',
         );
+        if (callbackOnParticipantJoined != null) {
+          callbackOnParticipantJoined();
+        }
       },
       participantLeft: (participantId) async {
         debugPrint('participantLeft - participantId: $participantId');

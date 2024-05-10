@@ -75,30 +75,71 @@ class UserListPage extends HookWidget {
             if (callKitEventListener == null) {
               // initialize listenerEvent of FlutterCallkitIncoming
               var newCallKitEventListener = CallkitIncomingUtil.listenerEvent(
-                callbackOnActionCallAccept: (event) {
+                callbackOnActionCallAccept: (event) async {
                   logger.d('callbackOnActionCallAccept');
+                  // wait a few second and show jitsi meet
                   // join room of Jitsi Meet
                   final roomName = event.body['extra']['roomName'];
                   final callId = event.body['id'];
                   if (roomName != null && callId != null) {
-                    JitsiMeetUtil.joinRoom(
-                      roomName: roomName,
-                      user: user,
-                      callbackOnReadyToClose: () {
-                        CallkitIncomingUtil.endCurrentCall(callId);
-                        logger.d(
-                          '>>> Called: CallkitIncomingUtil.endCurrentCall.',
-                        );
-                        // CallkitIncomingUtil.endAllCalls();
-                      },
+                    // Show loading dialog
+                    DialogsUtil.showLoadingDialog(
+                      context,
+                      key: _globalKeyForLoadingDialog,
                     );
+                    // Send request to "Video respond" Api - accept: true
+                    await context
+                        .read<FcmCallChangeNotifier>()
+                        .createFcmVideoRespond(
+                          roomName: roomName,
+                          accept: true,
+                        );
+
+                    // wait for a 3 second3 until caller receive the fcm push,
+                    // then create and join the room
+                    await Future.delayed(const Duration(seconds: 3), () async {
+                      // close loading dialog
+                      final currentContextOfLoadingDialog =
+                          _globalKeyForLoadingDialog.currentContext;
+                      if (currentContextOfLoadingDialog != null) {
+                        Navigator.of(
+                          currentContextOfLoadingDialog,
+                        ).pop();
+                      }
+                      // join room of jitsi meet
+                      JitsiMeetUtil.joinRoom(
+                        roomName: roomName,
+                        user: user,
+                        callbackOnReadyToClose: () {
+                          // call this method to make sure there is no any calls left
+                          CallkitIncomingUtil.endAllCalls();
+                          Provider.of<FcmCallChangeNotifier>(
+                            context,
+                            listen: false,
+                          ).createFcmVideoTerminate(roomName);
+                        },
+                      );
+                    });
                   }
                 },
-                callbackOnActionCallDecline: (event) {
+                callbackOnActionCallDecline: (event) async {
                   logger.d('callbackOnActionCallDecline');
+                  // Send request to "Video respond" Api - accept: false
+                  final roomName = event.body['extra']['roomName'];
+                  if (roomName != null) {
+                    await context
+                        .read<FcmCallChangeNotifier>()
+                        .createFcmVideoRespond(
+                          roomName: roomName,
+                          accept: false,
+                        );
+                  }
                 },
                 callbackOnActionCallEnded: (event) {
                   logger.d('callbackOnActionCallEnded');
+                  // TODO: (in case required) adding condition on
+                  // isJoinedRoom
+                  // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
                 },
               );
               if (newCallKitEventListener != null) {
@@ -162,10 +203,6 @@ class UserListPage extends HookWidget {
               calleeAvatar: calleeAvatar,
             ).push(context),
           );
-
-          // TODO: move this code - Create and join room of Jitsi Meet
-          // joinRoom only when get fcm push notification - call accepted
-          // JitsiMeetUtil.joinRoom(roomName: roomName, user: user);
         }
         return null;
       },

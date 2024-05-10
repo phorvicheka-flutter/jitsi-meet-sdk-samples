@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 // import '../change_notifiers/auth_change_notifier.dart';
 import '../change_notifiers/auth_change_notifier.dart';
+import '../change_notifiers/fcm_call_change_notifier.dart';
 import '../change_notifiers/fcm_token_change_notifier.dart';
 // import '../data/models/save_fcm_token_request/save_fcm_token_request.dart';
 import 'package:provider/provider.dart';
@@ -35,30 +36,39 @@ Future<void> _handleMessageOfBackgroundNotification(
   final notificationType =
       FirebaseServiceUtil.getNotificationType(notificationBody);
   switch (notificationType) {
+    //#region Notification for callee only
     case NotificationType.videoCall:
       // Handle video call notification
-      CallkitIncomingUtil.showCallkitIncoming(
-        notificationBody!,
-      );
+      // Show CallkitIncoming only if not in call
+      bool hasActiveCall = await CallkitIncomingUtil.hasActiveCall();
+      if (!hasActiveCall) {
+        CallkitIncomingUtil.showCallkitIncoming(
+          notificationBody!,
+        );
+      } else {
+        logger.d('handleMessageOfForegroundNotification: user is in call!!!');
+      }
       break;
+    //#endregion
+    //#region Notification for caller only
     case NotificationType.videoRespondAccepted:
       // Handle video respond accepted notification
+      // Case: not Applicable or never happen in background
       break;
     case NotificationType.videoRespondRejected:
       // Handle video respond rejected notification
+      // Case: not Applicable or never happen in background
       break;
+    //#endregion
+    //#region Notification for botth callee and caller
     case NotificationType.videoTerminate:
-      // TODO: (in case required) adding condition on
-      // isJoinedRoom
-      // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
-      // At caller side -> if not isJoinedRoom, do nothing
-      // Handle video terminate notification
       // Handle video terminate notification
       CallkitIncomingUtil.endAllCalls();
       break;
     case NotificationType.unknown:
       // Handle unknown notification type
       break;
+    //#endregion
   }
 
   if (notificationBody != null && notificationBody.isNotEmpty) {
@@ -108,6 +118,8 @@ class FirebaseNotificationHandler extends HookWidget {
               logger.d('>>> Called: CallkitIncomingUtil.endCurrentCall.');
               // call this method to make sure there is no any calls left
               CallkitIncomingUtil.endAllCalls();
+              Provider.of<FcmCallChangeNotifier>(context, listen: false)
+                  .createFcmVideoTerminate(roomName);
             },
           );
         }
@@ -190,7 +202,9 @@ class FirebaseNotificationHandler extends HookWidget {
       final notificationType =
           FirebaseServiceUtil.getNotificationType(notificationBody);
       switch (notificationType) {
+        //#region Notification for callee only
         case NotificationType.videoCall:
+          logger.d('NotificationType.videoCall');
           // Handle video call notification
           // Show CallkitIncoming only if not in call
           bool hasActiveCall = await CallkitIncomingUtil.hasActiveCall();
@@ -203,35 +217,63 @@ class FirebaseNotificationHandler extends HookWidget {
                 .d('handleMessageOfForegroundNotification: user is in call!!!');
           }
           break;
+        //#endregion
+        //#region Notification for caller only
         case NotificationType.videoRespondAccepted:
+          logger.d('NotificationType.videoRespondAccepted');
           // Handle video respond accepted notification
+          // create and join room of Jitsi Meet
+          final fcmVideoCallResponseData =
+              Provider.of<FcmCallChangeNotifier>(context, listen: false)
+                  .fcmVideoCallResponseData;
+          String? roomName = fcmVideoCallResponseData?.roomName;
+          if (roomName != null) {
+            final String currentLocation =
+                Provider.of<AppRouter>(context, listen: false)
+                    .getCurrentLocation(context);
+            if (currentLocation.startsWith(pathOutgoingCall)) {
+              final GoRouter goRouter =
+                  Provider.of<AppRouter>(context, listen: false).router;
+              goRouter.pop(context);
+            }
+            JitsiMeetUtil.joinRoom(
+              roomName: roomName,
+              user: user,
+              callbackOnReadyToClose: () {
+                // call this method to make sure there is no any calls left
+                CallkitIncomingUtil.endAllCalls();
+                Provider.of<FcmCallChangeNotifier>(context, listen: false)
+                    .createFcmVideoTerminate(roomName);
+              },
+            );
+          }
           break;
         case NotificationType.videoRespondRejected:
+          logger.d('NotificationType.videoRespondRejected');
           // Handle video respond rejected notification
+          // At caller side
+          // -> check if at outgoing_call_page, navigate pop of outgoing_call_page
+          // which will call method enCall (send request to "Video terminate" Api)
+          final String currentLocation =
+              Provider.of<AppRouter>(context, listen: false)
+                  .getCurrentLocation(context);
+          if (currentLocation.startsWith(pathOutgoingCall)) {
+            final GoRouter goRouter =
+                Provider.of<AppRouter>(context, listen: false).router;
+            goRouter.pop(context);
+          }
           break;
+        //#endregion
+        //#region Notification for botth callee and caller
         case NotificationType.videoTerminate:
-          // TODO: (in case required) adding condition on
-          // isJoinedRoom
-          // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
-          // At caller side -> if not isJoinedRoom, do nothing
-          // Handle video terminate notification
+          logger.d('NotificationType.videoTerminate');
           CallkitIncomingUtil.endAllCalls();
           break;
         case NotificationType.unknown:
           // Handle unknown notification type
           break;
+        //#endregion
       }
-      /* if (notificationBody != null && notificationBody.isNotEmpty) {
-        // Show CallkitIncoming only if not in call
-        bool hasActiveCall = await CallkitIncomingUtil.hasActiveCall();
-        if (!hasActiveCall) {
-          CallkitIncomingUtil.showCallkitIncoming(
-            notificationBody,
-          );
-        } else {
-          logger.d('handleMessageOfForegroundNotification: user is in call!!!');
-        }
-      } */
     }
 
     void onDidReceiveNotificationResponse(

@@ -48,4 +48,15 @@ class AppRouter {
     // changes on the listenable will cause the router to refresh it's route
     refreshListenable: authChangeNotifier,
   );
+
+  String getCurrentLocation(BuildContext context) {
+    final RouteMatch lastMatch =
+        _goRouter.routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : _goRouter.routerDelegate.currentConfiguration;
+    final String currentLocation = matchList.uri.toString();
+
+    return currentLocation;
+  }
 }

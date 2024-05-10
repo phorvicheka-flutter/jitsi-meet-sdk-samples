@@ -35,4 +35,21 @@ class FcmCallApi {
       rethrow;
     }
   }
+
+  Future<bool> createFcmVideoRespond({
+    required String roomName,
+    required bool accept,
+  }) async {
+    try {
+      await dioClient.put(
+        '${Endpoints.fcmCall}/room/$roomName',
+        data: {
+          'accept': accept,
+        },
+      );
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

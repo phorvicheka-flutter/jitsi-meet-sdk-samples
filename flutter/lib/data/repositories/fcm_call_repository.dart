@@ -30,4 +30,19 @@ class FcmCallRepository {
       rethrow;
     }
   }
+
+  Future<bool> createFcmVideoRespond({
+    required String roomName,
+    required bool accept,
+  }) async {
+    try {
+      await fcmCallApi.createFcmVideoRespond(
+        roomName: roomName,
+        accept: accept,
+      );
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
