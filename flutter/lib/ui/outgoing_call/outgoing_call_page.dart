@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
+import '../../change_notifiers/fcm_call_change_notifier.dart';
 import '../../constants/app_colors.dart';
 import 'package:logger/logger.dart';
 
@@ -20,44 +22,75 @@ class OutgoingCallPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useEffect(
-      () {
-        return () {
-          // TODO: Send request to "Video terminate" Api
+    FcmCallChangeNotifier fcmCallChangeNotifier =
+        context.read<FcmCallChangeNotifier>();
+
+    void endCall() {
+      // Send request to "Video terminate" Api
+      // don't need to use await or care whether request is succeed or not, for user smooth experiences
+      fcmCallChangeNotifier.createFcmVideoTerminate(roomName);
+    }
+
+    useOnAppLifecycleStateChange(
+      (previous, current) async {
+        if (current == AppLifecycleState.detached) {
           logger.d(
-            'useEffect - onDestroy - need to call API Video terminate: DELETE /video/room/:roomName',
+            'AppLifecycleState.detached - onDestroy - need to call API Video terminate: DELETE /video/room/:roomName',
           );
-        };
+          endCall();
+        }
       },
-      const [],
     );
 
-    return Scaffold(
-      body: Center(
-        child: Container(
-          width: double.infinity,
-          color: AppColors.primary, // Change color according to your theme
-          child: Column(
-            children: [
-              // "Calling..." with animation
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildCallingText(),
-                    const SizedBox(height: 10),
-                    // User avatar and name
-                    _buildUserAvatarAndName(
-                      userName: calleeName,
-                      userAvatar: calleeAvatar,
-                    ),
-                  ],
+    Future<void> onPopInvoked(didPop) async {
+      if (didPop) {
+        return;
+      }
+      logger.d(
+        'onPopInvoked - need to call API Video terminate: DELETE /video/room/:roomName',
+      );
+      // Close the outgoing call screen
+      Navigator.of(context).pop();
+      endCall();
+    }
+
+    return PopScope(
+      canPop: false,
+      onPopInvoked: onPopInvoked,
+      child: Scaffold(
+        body: Center(
+          child: Container(
+            width: double.infinity,
+            color: AppColors.primary, // Change color according to your theme
+            child: Column(
+              children: [
+                // "Calling..." with animation
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _buildCallingText(),
+                      const SizedBox(height: 10),
+                      // User avatar and name
+                      _buildUserAvatarAndName(
+                        userName: calleeName,
+                        userAvatar: calleeAvatar,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              // Button to end the call
-              _buildEndCallButton(context),
-            ],
+                // Button to end the call
+                _buildEndCallButton(
+                  context,
+                  onPressed: () {
+                    // Close the outgoing call screen
+                    Navigator.of(context).pop();
+                    endCall();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -116,19 +149,17 @@ class OutgoingCallPage extends HookWidget {
     );
   }
 
-  Widget _buildEndCallButton(context) {
+  Widget _buildEndCallButton(
+    context, {
+    required void Function()? onPressed,
+  }) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: SizedBox(
         width: double.infinity, // Make the button take full width
         height: 50,
         child: ElevatedButton.icon(
-          onPressed: () {
-            // TODO: Send request to "Video terminate" Api
-            // DELETE /video/room/{roomName}
-            // On success, call Navigator.of(context).pop();
-            Navigator.of(context).pop(); // Close the outgoing call screen
-          },
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red, // Button color
             shape: RoundedRectangleBorder(

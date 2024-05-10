@@ -116,36 +116,9 @@ class UserListPage extends HookWidget {
       const [],
     );
 
+    // Handle API request case: error
     useEffect(
       () {
-        if (apiRequestStateOfFcmCallChangeNotifier.isSuccess) {
-          final currentContextOfLoadingDialog =
-              _globalKeyForLoadingDialog.currentContext;
-          if (currentContextOfLoadingDialog != null) {
-            // close loading dialog
-            Navigator.of(currentContextOfLoadingDialog).pop();
-          }
-
-          if (fcmVideoCallResponseData != null) {
-            // Navigate to outgoing call page
-            final roomName = fcmVideoCallResponseData.roomName;
-            final calleeName = fcmVideoCallResponseData.calleeName;
-            // TODO: calleeAvatar
-            const calleeAvatar = 'https://i.pravatar.cc/100';
-            Future.microtask(
-              () => OutgoinCallRoute(
-                roomName: roomName,
-                calleeName: calleeName,
-                calleeAvatar: calleeAvatar,
-              ).push(context),
-            );
-
-            // TODO: move this code - Create and join room of Jitsi Meet
-            // joinRoom only when get fcm push notification - call accepted
-            // JitsiMeetUtil.joinRoom(roomName: roomName, user: user);
-          }
-        }
-
         if (apiRequestStateOfFcmCallChangeNotifier.isError) {
           final currentContextOfLoadingDialog =
               _globalKeyForLoadingDialog.currentContext;
@@ -163,7 +136,40 @@ class UserListPage extends HookWidget {
         }
         return null;
       },
-      [apiRequestStateOfFcmCallChangeNotifier, fcmVideoCallResponseData],
+      [apiRequestStateOfFcmCallChangeNotifier],
+    );
+
+    // Handle API request case: success
+    // On success api request -> fcmVideoCallResponseData is not null
+    useEffect(
+      () {
+        if (fcmVideoCallResponseData != null) {
+          final currentContextOfLoadingDialog =
+              _globalKeyForLoadingDialog.currentContext;
+          if (currentContextOfLoadingDialog != null) {
+            // close loading dialog
+            Navigator.of(currentContextOfLoadingDialog).pop();
+          }
+          // Navigate to outgoing call page
+          final roomName = fcmVideoCallResponseData.roomName;
+          final calleeName = fcmVideoCallResponseData.calleeName;
+          // TODO: calleeAvatar
+          const calleeAvatar = 'https://i.pravatar.cc/100';
+          Future.microtask(
+            () => OutgoinCallRoute(
+              roomName: roomName,
+              calleeName: calleeName,
+              calleeAvatar: calleeAvatar,
+            ).push(context),
+          );
+
+          // TODO: move this code - Create and join room of Jitsi Meet
+          // joinRoom only when get fcm push notification - call accepted
+          // JitsiMeetUtil.joinRoom(roomName: roomName, user: user);
+        }
+        return null;
+      },
+      [fcmVideoCallResponseData],
     );
 
     /* void handleAudioCall(BuildContext context, GetUsersResponseDataUser user) {

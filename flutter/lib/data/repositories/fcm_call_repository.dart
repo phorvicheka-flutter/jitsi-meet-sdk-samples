@@ -19,4 +19,15 @@ class FcmCallRepository {
       rethrow;
     }
   }
+
+  Future<bool> createFcmVideoTerminate(
+    String roomName,
+  ) async {
+    try {
+      await fcmCallApi.createFcmVideoTerminate(roomName);
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -22,4 +22,17 @@ class FcmCallApi {
       rethrow;
     }
   }
+
+  Future<bool> createFcmVideoTerminate(
+    String roomName,
+  ) async {
+    try {
+      await dioClient.delete(
+        '${Endpoints.fcmCall}/room/$roomName',
+      );
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

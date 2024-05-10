@@ -111,7 +111,6 @@ class FirebaseNotificationHandler extends HookWidget {
           'AppLifecycleState.detached - onDestroy - need to call API Video terminate: DELETE /video/room/:roomName',
         );
       }
-      return null;
     });
 
     void navigatePushToRegisterPage() {

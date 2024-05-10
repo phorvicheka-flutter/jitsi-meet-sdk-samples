@@ -35,6 +35,16 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     );
   }
 
+  Future<void> createFcmVideoTerminate(
+    String roomName,
+  ) async {
+    await sendApiRequest(
+      () async {
+        await fcmCallRepository.createFcmVideoTerminate(roomName);
+      },
+    );
+  }
+
   /* -------------------------------- FlutterCallkitIncoming -------------------------------- */
   //Create a listener parameter
   StreamSubscription<CallEvent?>? _callKitEventListener;
