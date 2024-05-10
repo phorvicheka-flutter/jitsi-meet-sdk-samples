@@ -10,6 +10,7 @@ import '../change_notifiers/fcm_token_change_notifier.dart';
 // import '../data/models/save_fcm_token_request/save_fcm_token_request.dart';
 import 'package:provider/provider.dart';
 
+import '../data/enums/notification_type.dart';
 import '../data/models/user/user.dart';
 import '../routes/app_router.dart';
 import '../routes/routes.dart';
@@ -31,6 +32,35 @@ Future<void> _handleMessageOfBackgroundNotification(
   logger.i('_handleMessageOfBackgroundNotification');
   logger.i(message.toMap());
   final String? notificationBody = message.notification?.body;
+  final notificationType =
+      FirebaseServiceUtil.getNotificationType(notificationBody);
+  switch (notificationType) {
+    case NotificationType.videoCall:
+      // Handle video call notification
+      CallkitIncomingUtil.showCallkitIncoming(
+        notificationBody!,
+      );
+      break;
+    case NotificationType.videoRespondAccepted:
+      // Handle video respond accepted notification
+      break;
+    case NotificationType.videoRespondRejected:
+      // Handle video respond rejected notification
+      break;
+    case NotificationType.videoTerminate:
+      // TODO: (in case required) adding condition on
+      // isJoinedRoom
+      // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
+      // At caller side -> if not isJoinedRoom, do nothing
+      // Handle video terminate notification
+      // Handle video terminate notification
+      CallkitIncomingUtil.endAllCalls();
+      break;
+    case NotificationType.unknown:
+      // Handle unknown notification type
+      break;
+  }
+
   if (notificationBody != null && notificationBody.isNotEmpty) {
     CallkitIncomingUtil.showCallkitIncoming(
       notificationBody,
@@ -157,7 +187,41 @@ class FirebaseNotificationHandler extends HookWidget {
       logger.i('_handleMessageOfForegroundNotification');
       logger.i(message.toMap());
       final String? notificationBody = message.notification?.body;
-      if (notificationBody != null && notificationBody.isNotEmpty) {
+      final notificationType =
+          FirebaseServiceUtil.getNotificationType(notificationBody);
+      switch (notificationType) {
+        case NotificationType.videoCall:
+          // Handle video call notification
+          // Show CallkitIncoming only if not in call
+          bool hasActiveCall = await CallkitIncomingUtil.hasActiveCall();
+          if (!hasActiveCall) {
+            CallkitIncomingUtil.showCallkitIncoming(
+              notificationBody!,
+            );
+          } else {
+            logger
+                .d('handleMessageOfForegroundNotification: user is in call!!!');
+          }
+          break;
+        case NotificationType.videoRespondAccepted:
+          // Handle video respond accepted notification
+          break;
+        case NotificationType.videoRespondRejected:
+          // Handle video respond rejected notification
+          break;
+        case NotificationType.videoTerminate:
+          // TODO: (in case required) adding condition on
+          // isJoinedRoom
+          // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
+          // At caller side -> if not isJoinedRoom, do nothing
+          // Handle video terminate notification
+          CallkitIncomingUtil.endAllCalls();
+          break;
+        case NotificationType.unknown:
+          // Handle unknown notification type
+          break;
+      }
+      /* if (notificationBody != null && notificationBody.isNotEmpty) {
         // Show CallkitIncoming only if not in call
         bool hasActiveCall = await CallkitIncomingUtil.hasActiveCall();
         if (!hasActiveCall) {
@@ -167,7 +231,7 @@ class FirebaseNotificationHandler extends HookWidget {
         } else {
           logger.d('handleMessageOfForegroundNotification: user is in call!!!');
         }
-      }
+      } */
     }
 
     void onDidReceiveNotificationResponse(

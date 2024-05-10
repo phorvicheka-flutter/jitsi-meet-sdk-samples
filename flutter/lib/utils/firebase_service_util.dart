@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
+
+import '../data/enums/notification_type.dart';
 
 var logger = Logger();
 
@@ -178,5 +181,37 @@ abstract class FirebaseServiceUtil {
         }
       }
     });
+  }
+
+  static NotificationType getNotificationType(String? notificationBody) {
+    if (notificationBody == null) {
+      return NotificationType.videoTerminate;
+    }
+
+    try {
+      final Map<String, dynamic> jsonBody = jsonDecode(notificationBody);
+      if (jsonBody.isEmpty) {
+        // Video terminate notification
+        return NotificationType.unknown;
+      } else if (jsonBody.containsKey('accept')) {
+        final bool acceptValue = jsonBody['accept'] as bool;
+        if (acceptValue) {
+          // Video respond accepted notification
+          return NotificationType.videoRespondAccepted;
+        } else {
+          // Video respond rejected notification
+          return NotificationType.videoRespondRejected;
+        }
+      } else if (jsonBody.containsKey('roomName')) {
+        // Video call notification
+        return NotificationType.videoCall;
+      }
+    } catch (e) {
+      // JSON parsing error
+      return NotificationType.unknown;
+    }
+
+    // Unknown notification type
+    return NotificationType.unknown;
   }
 }
