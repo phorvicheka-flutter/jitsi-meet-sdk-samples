@@ -236,6 +236,9 @@ class UserListPage extends HookWidget {
             icon: const Icon(Icons.logout),
             onPressed: () {
               context.read<AuthChangeNotifier>().logout();
+              context
+                  .read<FcmCallChangeNotifier>()
+                  .resetFcmVideoCallResponseData();
             },
           ),
         ],

@@ -22,6 +22,11 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
+  void resetFcmVideoCallResponseData() {
+    _fcmVideoCallResponseData = null;
+    notifyListeners();
+  }
+
   Future<void> createFcmVideoCall(
     String loginId,
   ) async {
@@ -41,6 +46,7 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     await sendApiRequest(
       () async {
         await fcmCallRepository.createFcmVideoTerminate(roomName);
+        resetFcmVideoCallResponseData();
       },
     );
   }
