@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_callkit_incoming/entities/call_event.dart';
 
+import '../data/enums/api_request_state.dart';
 import '../data/models/fcm_video_call_response/fcm_video_call_response.dart';
 import '../data/models/fcm_video_call_response/fcm_video_call_response_data.dart';
 import '../data/repositories/fcm_call_repository.dart';
@@ -22,8 +23,9 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  void resetFcmVideoCallResponseData() {
+  void resetFcmCallChangeNotifier() {
     _fcmVideoCallResponseData = null;
+    setApiRequestState(ApiRequestState.idle);
     notifyListeners();
   }
 
@@ -46,7 +48,7 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     await sendApiRequest(
       () async {
         await fcmCallRepository.createFcmVideoTerminate(roomName);
-        resetFcmVideoCallResponseData();
+        resetFcmCallChangeNotifier();
       },
     );
   }

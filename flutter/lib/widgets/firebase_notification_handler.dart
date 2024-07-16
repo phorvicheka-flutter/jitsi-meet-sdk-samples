@@ -297,6 +297,8 @@ class FirebaseNotificationHandler extends HookWidget {
 
       // Save the initial token to FcmTokenChangeNotifier
       setFcmToken(token);
+      logger.i('setupToken() - Token:');
+      logger.i(token);
 
       // Any time the token refreshes, store this in the database too.
       FirebaseMessaging.instance.onTokenRefresh.listen(setFcmToken);
@@ -326,6 +328,9 @@ class FirebaseNotificationHandler extends HookWidget {
           isUseFlutterLocalNotificationsPlugin: false,
         );
         setupToken();
+        debugPrint(
+          'FirebaseNotificationHandler: Successfully call FirebaseServiceUtil.initializeNotification.',
+        );
 
         return null;
       },

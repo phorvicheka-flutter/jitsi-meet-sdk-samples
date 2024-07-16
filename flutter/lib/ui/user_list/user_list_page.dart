@@ -145,6 +145,9 @@ class UserListPage extends HookWidget {
               if (newCallKitEventListener != null) {
                 setCallKitEventListener(newCallKitEventListener);
               }
+              debugPrint(
+                'UserListPage: successfully register a listener for callkit.',
+              );
             } else {
               debugPrint('UserListPage: already have a listener for callkit.');
             }
@@ -238,7 +241,7 @@ class UserListPage extends HookWidget {
               context.read<AuthChangeNotifier>().logout();
               context
                   .read<FcmCallChangeNotifier>()
-                  .resetFcmVideoCallResponseData();
+                  .resetFcmCallChangeNotifier();
             },
           ),
         ],
