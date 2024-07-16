@@ -56,7 +56,7 @@ class UserListPage extends HookWidget {
     );
 
     void setCallKitEventListener(
-      StreamSubscription<CallEvent?> newCallKitEventListener,
+      StreamSubscription<CallEvent?>? newCallKitEventListener,
     ) {
       final fcmCallChangeNotifier = context.read<FcmCallChangeNotifier>();
       fcmCallChangeNotifier.setCallKitEventListener(newCallKitEventListener);
@@ -73,78 +73,80 @@ class UserListPage extends HookWidget {
             // #region - init incoming callkit event listener
             // https://github.com/hiennguyen92/flutter_callkit_incoming/issues/189#issuecomment-1443112119
             if (callKitEventListener == null) {
+              // just to make sure - call cancel() to avoid duplicated event
+              callKitEventListener?.cancel();
               // initialize listenerEvent of FlutterCallkitIncoming
-              var newCallKitEventListener = CallkitIncomingUtil.listenerEvent(
-                callbackOnActionCallAccept: (event) async {
-                  logger.d('callbackOnActionCallAccept');
-                  // wait a few second and show jitsi meet
-                  // join room of Jitsi Meet
-                  final roomName = event.body['extra']['roomName'];
-                  final callId = event.body['id'];
-                  if (roomName != null && callId != null) {
-                    // Show loading dialog
-                    DialogsUtil.showLoadingDialog(
-                      context,
-                      key: _globalKeyForLoadingDialog,
-                    );
-                    // Send request to "Video respond" Api - accept: true
-                    await context
-                        .read<FcmCallChangeNotifier>()
-                        .createFcmVideoRespond(
-                          roomName: roomName,
-                          accept: true,
-                        );
-
-                    // wait for a 3 second3 until caller receive the fcm push,
-                    // then create and join the room
-                    await Future.delayed(const Duration(seconds: 3), () async {
-                      // close loading dialog
-                      final currentContextOfLoadingDialog =
-                          _globalKeyForLoadingDialog.currentContext;
-                      if (currentContextOfLoadingDialog != null) {
-                        Navigator.of(
-                          currentContextOfLoadingDialog,
-                        ).pop();
-                      }
-                      // join room of jitsi meet
-                      JitsiMeetUtil.joinRoom(
-                        roomName: roomName,
-                        user: user,
-                        callbackOnReadyToClose: () {
-                          // call this method to make sure there is no any calls left
-                          CallkitIncomingUtil.endAllCalls();
-                          Provider.of<FcmCallChangeNotifier>(
-                            context,
-                            listen: false,
-                          ).createFcmVideoTerminate(roomName);
-                        },
+              setCallKitEventListener(
+                CallkitIncomingUtil.listenerEvent(
+                  callbackOnActionCallAccept: (event) async {
+                    logger.d('callbackOnActionCallAccept');
+                    // wait a few second and show jitsi meet
+                    // join room of Jitsi Meet
+                    final roomName = event.body['extra']['roomName'];
+                    final callId = event.body['id'];
+                    if (roomName != null && callId != null) {
+                      // Show loading dialog
+                      DialogsUtil.showLoadingDialog(
+                        context,
+                        key: _globalKeyForLoadingDialog,
                       );
-                    });
-                  }
-                },
-                callbackOnActionCallDecline: (event) async {
-                  logger.d('callbackOnActionCallDecline');
-                  // Send request to "Video respond" Api - accept: false
-                  final roomName = event.body['extra']['roomName'];
-                  if (roomName != null) {
-                    await context
-                        .read<FcmCallChangeNotifier>()
-                        .createFcmVideoRespond(
+                      // Send request to "Video respond" Api - accept: true
+                      await context
+                          .read<FcmCallChangeNotifier>()
+                          .createFcmVideoRespond(
+                            roomName: roomName,
+                            accept: true,
+                          );
+
+                      // wait for a 3 second3 until caller receive the fcm push,
+                      // then create and join the room
+                      await Future.delayed(const Duration(seconds: 3),
+                          () async {
+                        // close loading dialog
+                        final currentContextOfLoadingDialog =
+                            _globalKeyForLoadingDialog.currentContext;
+                        if (currentContextOfLoadingDialog != null) {
+                          Navigator.of(
+                            currentContextOfLoadingDialog,
+                          ).pop();
+                        }
+                        // join room of jitsi meet
+                        JitsiMeetUtil.joinRoom(
                           roomName: roomName,
-                          accept: false,
+                          user: user,
+                          callbackOnReadyToClose: () {
+                            // call this method to make sure there is no any calls left
+                            CallkitIncomingUtil.endAllCalls();
+                            Provider.of<FcmCallChangeNotifier>(
+                              context,
+                              listen: false,
+                            ).createFcmVideoTerminate(roomName);
+                          },
                         );
-                  }
-                },
-                callbackOnActionCallEnded: (event) {
-                  logger.d('callbackOnActionCallEnded');
-                  // TODO: (in case required) adding condition on
-                  // isJoinedRoom
-                  // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
-                },
+                      });
+                    }
+                  },
+                  callbackOnActionCallDecline: (event) async {
+                    logger.d('callbackOnActionCallDecline');
+                    // Send request to "Video respond" Api - accept: false
+                    final roomName = event.body['extra']['roomName'];
+                    if (roomName != null) {
+                      await context
+                          .read<FcmCallChangeNotifier>()
+                          .createFcmVideoRespond(
+                            roomName: roomName,
+                            accept: false,
+                          );
+                    }
+                  },
+                  callbackOnActionCallEnded: (event) {
+                    logger.d('callbackOnActionCallEnded');
+                    // TODO: (in case required) adding condition on
+                    // isJoinedRoom
+                    // At callee side -> if not isJoinedRoom, show FlutterCallkitIncoming showMissCallNotification
+                  },
+                ),
               );
-              if (newCallKitEventListener != null) {
-                setCallKitEventListener(newCallKitEventListener);
-              }
               debugPrint(
                 'UserListPage: successfully register a listener for callkit.',
               );

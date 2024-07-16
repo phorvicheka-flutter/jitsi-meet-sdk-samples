@@ -13,6 +13,7 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
 
   final FcmCallRepository fcmCallRepository;
 
+  /* -------------------------------- FcmVideoCall States -------------------------------- */
   FcmVideoCallResponseData? _fcmVideoCallResponseData;
   FcmVideoCallResponseData? get fcmVideoCallResponseData =>
       _fcmVideoCallResponseData;
@@ -23,7 +24,7 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  void resetFcmCallChangeNotifier() {
+  void resetFcmVideoCallStates() {
     _fcmVideoCallResponseData = null;
     setApiRequestState(ApiRequestState.idle);
     notifyListeners();
@@ -48,7 +49,7 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
     await sendApiRequest(
       () async {
         await fcmCallRepository.createFcmVideoTerminate(roomName);
-        resetFcmCallChangeNotifier();
+        resetFcmVideoCallStates();
       },
     );
   }
@@ -73,9 +74,21 @@ class FcmCallChangeNotifier extends BaseChangeNotifier {
   StreamSubscription<CallEvent?>? get callKitEventListener =>
       _callKitEventListener;
   Future<void> setCallKitEventListener(
-    StreamSubscription<CallEvent?> callKitEventListener,
+    StreamSubscription<CallEvent?>? callKitEventListener,
   ) async {
     _callKitEventListener = callKitEventListener;
     notifyListeners();
+  }
+
+  void resetCallKitEventListener() {
+    // Cancel any existing subscription before setting up a new one
+    _callKitEventListener?.cancel();
+    _callKitEventListener = null;
+    notifyListeners();
+  }
+
+  void resetFcmCallChangeNotifier() {
+    resetFcmVideoCallStates();
+    resetCallKitEventListener();
   }
 }
