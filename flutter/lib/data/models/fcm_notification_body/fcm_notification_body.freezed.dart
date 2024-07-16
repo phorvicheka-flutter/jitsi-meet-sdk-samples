@@ -20,8 +20,13 @@ FcmNotificationBody _$FcmNotificationBodyFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FcmNotificationBody {
-  String? get roomName => throw _privateConstructorUsedError;
-  String? get nameCaller => throw _privateConstructorUsedError;
+  String get roomName => throw _privateConstructorUsedError;
+  String get callerLoginId => throw _privateConstructorUsedError;
+  String get callerName => throw _privateConstructorUsedError;
+  String get calleeLoginId => throw _privateConstructorUsedError;
+  String get calleeName => throw _privateConstructorUsedError;
+  String get callStatus => throw _privateConstructorUsedError;
+  String get pushMessageId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +40,14 @@ abstract class $FcmNotificationBodyCopyWith<$Res> {
           FcmNotificationBody value, $Res Function(FcmNotificationBody) then) =
       _$FcmNotificationBodyCopyWithImpl<$Res, FcmNotificationBody>;
   @useResult
-  $Res call({String? roomName, String? nameCaller});
+  $Res call(
+      {String roomName,
+      String callerLoginId,
+      String callerName,
+      String calleeLoginId,
+      String calleeName,
+      String callStatus,
+      String pushMessageId});
 }
 
 /// @nodoc
@@ -51,18 +63,43 @@ class _$FcmNotificationBodyCopyWithImpl<$Res, $Val extends FcmNotificationBody>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? roomName = freezed,
-    Object? nameCaller = freezed,
+    Object? roomName = null,
+    Object? callerLoginId = null,
+    Object? callerName = null,
+    Object? calleeLoginId = null,
+    Object? calleeName = null,
+    Object? callStatus = null,
+    Object? pushMessageId = null,
   }) {
     return _then(_value.copyWith(
-      roomName: freezed == roomName
+      roomName: null == roomName
           ? _value.roomName
           : roomName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nameCaller: freezed == nameCaller
-          ? _value.nameCaller
-          : nameCaller // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      callerLoginId: null == callerLoginId
+          ? _value.callerLoginId
+          : callerLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      callerName: null == callerName
+          ? _value.callerName
+          : callerName // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeLoginId: null == calleeLoginId
+          ? _value.calleeLoginId
+          : calleeLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeName: null == calleeName
+          ? _value.calleeName
+          : calleeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      callStatus: null == callStatus
+          ? _value.callStatus
+          : callStatus // ignore: cast_nullable_to_non_nullable
+              as String,
+      pushMessageId: null == pushMessageId
+          ? _value.pushMessageId
+          : pushMessageId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -75,7 +112,14 @@ abstract class _$$FcmNotificationBodyImplCopyWith<$Res>
       __$$FcmNotificationBodyImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? roomName, String? nameCaller});
+  $Res call(
+      {String roomName,
+      String callerLoginId,
+      String callerName,
+      String calleeLoginId,
+      String calleeName,
+      String callStatus,
+      String pushMessageId});
 }
 
 /// @nodoc
@@ -89,18 +133,43 @@ class __$$FcmNotificationBodyImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? roomName = freezed,
-    Object? nameCaller = freezed,
+    Object? roomName = null,
+    Object? callerLoginId = null,
+    Object? callerName = null,
+    Object? calleeLoginId = null,
+    Object? calleeName = null,
+    Object? callStatus = null,
+    Object? pushMessageId = null,
   }) {
     return _then(_$FcmNotificationBodyImpl(
-      roomName: freezed == roomName
+      roomName: null == roomName
           ? _value.roomName
           : roomName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nameCaller: freezed == nameCaller
-          ? _value.nameCaller
-          : nameCaller // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      callerLoginId: null == callerLoginId
+          ? _value.callerLoginId
+          : callerLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      callerName: null == callerName
+          ? _value.callerName
+          : callerName // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeLoginId: null == calleeLoginId
+          ? _value.calleeLoginId
+          : calleeLoginId // ignore: cast_nullable_to_non_nullable
+              as String,
+      calleeName: null == calleeName
+          ? _value.calleeName
+          : calleeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      callStatus: null == callStatus
+          ? _value.callStatus
+          : callStatus // ignore: cast_nullable_to_non_nullable
+              as String,
+      pushMessageId: null == pushMessageId
+          ? _value.pushMessageId
+          : pushMessageId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -108,19 +177,36 @@ class __$$FcmNotificationBodyImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FcmNotificationBodyImpl implements _FcmNotificationBody {
-  _$FcmNotificationBodyImpl({this.roomName, this.nameCaller});
+  _$FcmNotificationBodyImpl(
+      {required this.roomName,
+      required this.callerLoginId,
+      required this.callerName,
+      required this.calleeLoginId,
+      required this.calleeName,
+      required this.callStatus,
+      required this.pushMessageId});
 
   factory _$FcmNotificationBodyImpl.fromJson(Map<String, dynamic> json) =>
       _$$FcmNotificationBodyImplFromJson(json);
 
   @override
-  final String? roomName;
+  final String roomName;
   @override
-  final String? nameCaller;
+  final String callerLoginId;
+  @override
+  final String callerName;
+  @override
+  final String calleeLoginId;
+  @override
+  final String calleeName;
+  @override
+  final String callStatus;
+  @override
+  final String pushMessageId;
 
   @override
   String toString() {
-    return 'FcmNotificationBody(roomName: $roomName, nameCaller: $nameCaller)';
+    return 'FcmNotificationBody(roomName: $roomName, callerLoginId: $callerLoginId, callerName: $callerName, calleeLoginId: $calleeLoginId, calleeName: $calleeName, callStatus: $callStatus, pushMessageId: $pushMessageId)';
   }
 
   @override
@@ -130,13 +216,24 @@ class _$FcmNotificationBodyImpl implements _FcmNotificationBody {
             other is _$FcmNotificationBodyImpl &&
             (identical(other.roomName, roomName) ||
                 other.roomName == roomName) &&
-            (identical(other.nameCaller, nameCaller) ||
-                other.nameCaller == nameCaller));
+            (identical(other.callerLoginId, callerLoginId) ||
+                other.callerLoginId == callerLoginId) &&
+            (identical(other.callerName, callerName) ||
+                other.callerName == callerName) &&
+            (identical(other.calleeLoginId, calleeLoginId) ||
+                other.calleeLoginId == calleeLoginId) &&
+            (identical(other.calleeName, calleeName) ||
+                other.calleeName == calleeName) &&
+            (identical(other.callStatus, callStatus) ||
+                other.callStatus == callStatus) &&
+            (identical(other.pushMessageId, pushMessageId) ||
+                other.pushMessageId == pushMessageId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, roomName, nameCaller);
+  int get hashCode => Object.hash(runtimeType, roomName, callerLoginId,
+      callerName, calleeLoginId, calleeName, callStatus, pushMessageId);
 
   @JsonKey(ignore: true)
   @override
@@ -155,16 +252,31 @@ class _$FcmNotificationBodyImpl implements _FcmNotificationBody {
 
 abstract class _FcmNotificationBody implements FcmNotificationBody {
   factory _FcmNotificationBody(
-      {final String? roomName,
-      final String? nameCaller}) = _$FcmNotificationBodyImpl;
+      {required final String roomName,
+      required final String callerLoginId,
+      required final String callerName,
+      required final String calleeLoginId,
+      required final String calleeName,
+      required final String callStatus,
+      required final String pushMessageId}) = _$FcmNotificationBodyImpl;
 
   factory _FcmNotificationBody.fromJson(Map<String, dynamic> json) =
       _$FcmNotificationBodyImpl.fromJson;
 
   @override
-  String? get roomName;
+  String get roomName;
   @override
-  String? get nameCaller;
+  String get callerLoginId;
+  @override
+  String get callerName;
+  @override
+  String get calleeLoginId;
+  @override
+  String get calleeName;
+  @override
+  String get callStatus;
+  @override
+  String get pushMessageId;
   @override
   @JsonKey(ignore: true)
   _$$FcmNotificationBodyImplCopyWith<_$FcmNotificationBodyImpl> get copyWith =>

@@ -61,7 +61,7 @@ Future<void> _handleMessageOfBackgroundNotification(
       break;
     //#endregion
     //#region Notification for botth callee and caller
-    case NotificationType.videoTerminate:
+    case NotificationType.videoTerminated:
       // Handle video terminate notification
       CallkitIncomingUtil.endAllCalls();
       break;
@@ -235,6 +235,14 @@ class FirebaseNotificationHandler extends HookWidget {
               final GoRouter goRouter =
                   Provider.of<AppRouter>(context, listen: false).router;
               goRouter.pop(context);
+              // Show a Snackbar - Video Call Accepted
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Video call was accepted.'),
+                  ),
+                );
+              });
             }
             JitsiMeetUtil.joinRoom(
               roomName: roomName,
@@ -261,12 +269,20 @@ class FirebaseNotificationHandler extends HookWidget {
             final GoRouter goRouter =
                 Provider.of<AppRouter>(context, listen: false).router;
             goRouter.pop(context);
+            // Show a Snackbar - Video Call Rejected
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Video call was rejected.'),
+                ),
+              );
+            });
           }
           break;
         //#endregion
         //#region Notification for botth callee and caller
-        case NotificationType.videoTerminate:
-          logger.d('NotificationType.videoTerminate');
+        case NotificationType.videoTerminated:
+          logger.d('NotificationType.videoTerminated');
           CallkitIncomingUtil.endAllCalls();
           break;
         case NotificationType.unknown:

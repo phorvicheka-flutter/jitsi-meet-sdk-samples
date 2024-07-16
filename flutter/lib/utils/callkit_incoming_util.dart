@@ -33,8 +33,8 @@ abstract class CallkitIncomingUtil {
     final notificationBodyAsMap = jsonDecode(notificationBody);
     FcmNotificationBody fcmNotificationBody =
         FcmNotificationBody.fromJson(notificationBodyAsMap);
-    final nameCaller = fcmNotificationBody.nameCaller ?? 'nameCaller';
-    final roomName = fcmNotificationBody.roomName ?? 'roomName';
+    final nameCaller = fcmNotificationBody.callerName;
+    final roomName = fcmNotificationBody.roomName;
 
     final params = CallKitParams(
       id: uuid,

@@ -185,26 +185,20 @@ abstract class FirebaseServiceUtil {
 
   static NotificationType getNotificationType(String? notificationBody) {
     if (notificationBody == null) {
-      return NotificationType.videoTerminate;
+      return NotificationType.unknown;
     }
 
     try {
       final Map<String, dynamic> jsonBody = jsonDecode(notificationBody);
+
       if (jsonBody.isEmpty) {
         // Video terminate notification
         return NotificationType.unknown;
-      } else if (jsonBody.containsKey('accept')) {
-        final bool acceptValue = jsonBody['accept'] as bool;
-        if (acceptValue) {
-          // Video respond accepted notification
-          return NotificationType.videoRespondAccepted;
-        } else {
-          // Video respond rejected notification
-          return NotificationType.videoRespondRejected;
-        }
-      } else if (jsonBody.containsKey('roomName')) {
-        // Video call notification
-        return NotificationType.videoCall;
+      } else if (jsonBody.containsKey('callStatus')) {
+        final String callStatus = jsonBody['callStatus'] as String;
+        NotificationType notificationType =
+            mapCallStatusToNotificationType(callStatus);
+        return notificationType;
       }
     } catch (e) {
       // JSON parsing error
