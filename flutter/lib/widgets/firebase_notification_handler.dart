@@ -70,12 +70,6 @@ Future<void> _handleMessageOfBackgroundNotification(
       break;
     //#endregion
   }
-
-  if (notificationBody != null && notificationBody.isNotEmpty) {
-    CallkitIncomingUtil.showCallkitIncoming(
-      notificationBody,
-    );
-  }
 }
 
 class FirebaseNotificationHandler extends HookWidget {
